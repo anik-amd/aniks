@@ -456,10 +456,10 @@
   }
 
   .footer-mark {
-    width: 0.9em;
-    height: 0.9em;
+    width: 1em;
+    height: 1em;
     margin-right: 0.3em;
-    vertical-align: -0.1em;
+    vertical-align: -0.15em;
     color: var(--muted);
   }
 

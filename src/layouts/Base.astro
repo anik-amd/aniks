@@ -85,15 +85,22 @@ const fullTitle = title === SITE.title ? `${SITE.name} — data science, open so
           <svg
             class="footer-mark"
             viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"
             aria-hidden="true"
             focusable="false"
           >
-            <circle cx="12" cy="12" r="9" />
-            <path d="M15.4 9.3a4.3 4.3 0 1 0 0 5.4" />
+            <defs>
+              <mask id="copyright-cut">
+                <rect width="24" height="24" fill="#fff" />
+                <path
+                  d="M15.4 8.6a4.6 4.6 0 1 0 0 6.8"
+                  fill="none"
+                  stroke="#000"
+                  stroke-width="2.6"
+                  stroke-linecap="round"
+                />
+              </mask>
+            </defs>
+            <circle cx="12" cy="12" r="10" fill="currentColor" mask="url(#copyright-cut)" />
           </svg>{new Date().getFullYear()} {SITE.name}
         </p>
         <p>
