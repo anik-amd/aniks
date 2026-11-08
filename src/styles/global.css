@@ -275,7 +275,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    column-gap: 1.35rem;
+    column-gap: 1.15rem;
     row-gap: 0.55rem;
   }
 
@@ -284,12 +284,25 @@
     align-items: baseline;
   }
 
+  /* The underline belongs to the label, not to the brand mark. */
+  .links a {
+    text-decoration: none;
+  }
+
+  .link-label {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.24em;
+    text-decoration-color: var(--accent);
+    transition: color 120ms ease, text-decoration-color 120ms ease;
+  }
+
   /* Brand marks stay muted until the link is hovered or focused. */
   .link-icon {
-    width: 0.8em;
-    height: 0.8em;
-    margin-right: 0.4em;
-    vertical-align: -0.06em;
+    width: 0.78em;
+    height: 0.78em;
+    margin-right: 0.32em;
+    vertical-align: -0.05em;
     color: var(--muted);
     transition: color 120ms ease;
   }
