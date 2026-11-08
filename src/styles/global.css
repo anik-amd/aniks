@@ -230,7 +230,7 @@
     grid-column: 1;
     grid-row: 2;
     margin-top: 0.4rem;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     font-style: italic;
     line-height: 1.4;
     color: var(--muted);
@@ -262,11 +262,11 @@
   .quote::before {
     content: '\201C';
     display: block;
-    font-size: clamp(3.25rem, 8vw, 4.5rem);
+    font-size: clamp(4rem, 10vw, 6rem);
     font-weight: 700;
-    line-height: 0.7;
+    line-height: 0.62;
     color: var(--accent);
-    margin-bottom: 0.5em;
+    margin-bottom: 0.45em;
   }
 
   .quote-text {
@@ -301,7 +301,7 @@
     align-items: baseline;
     gap: 0.65rem;
     font-family: var(--sans);
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
   }
 
   .theme button {
