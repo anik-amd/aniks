@@ -256,11 +256,24 @@
       left: 0;
       opacity: 0;
     }
-    12% {
+    5% {
       opacity: 1;
     }
-    50% {
+    46% {
       left: calc(100% - 6px);
+      opacity: 1;
+    }
+    54% {
+      left: calc(100% - 6px);
+      opacity: 0;
+    }
+    56% {
+      left: 0;
+      opacity: 0;
+    }
+    66% {
+      left: 0;
+      opacity: 1;
     }
     100% {
       left: 0;
