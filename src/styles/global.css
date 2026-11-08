@@ -160,16 +160,16 @@
 
   .identity {
     display: grid;
-    gap: clamp(1.5rem, 4vw, 2.1rem);
+    gap: clamp(2rem, 5vw, 2.75rem);
   }
 
   /* The greeting belongs with the paragraphs, not with the name. */
   .intro {
-    margin-top: clamp(1.1rem, 2.5vw, 1.4rem);
+    margin-top: clamp(1.5rem, 3.5vw, 2rem);
   }
 
   .intro p + p {
-    margin-top: 1.05rem;
+    margin-top: 1.15rem;
   }
 
   /* Section: title and note hang in a left column, links sit in the right one. */
