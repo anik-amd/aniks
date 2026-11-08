@@ -217,6 +217,25 @@
     display: inline-block;
   }
 
+  /* Each letter waits for the rule to pass, then settles in. */
+  .letter {
+    display: inline-block;
+    opacity: 0;
+    animation: letter-in 200ms ease-out forwards;
+    animation-delay: calc(0.4s + var(--i, 0) * 0.115s);
+  }
+
+  @keyframes letter-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.1em);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   /* First the rule crosses the name once to unveil it, then it rests and pulses. */
   .name-text::before {
     content: '';
@@ -227,8 +246,8 @@
     height: 0.84em;
     background-color: var(--accent);
     animation:
-      sweep 2.2s cubic-bezier(0.65, 0, 0.35, 1) 0.35s 1 both,
-      pulse 3.6s ease-in-out 2.55s infinite;
+      sweep 2.4s linear 0.3s 1 both,
+      pulse 3.6s ease-in-out 2.7s infinite;
   }
 
   @keyframes sweep {
@@ -556,6 +575,11 @@
     }
 
     .name-text::before {
+      animation: none;
+    }
+
+    .letter {
+      opacity: 1;
       animation: none;
     }
   }

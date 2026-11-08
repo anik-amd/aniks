@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import { PERSON, QUOTE, SAME_AS, SECTIONS, SITE } from '../consts';
 import { LINK_ICONS } from '../link-icons';
 
+const nameChars = [...PERSON.name];
+
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -36,7 +38,21 @@ const structuredData = {
 
 <Base>
   <Fragment slot="masthead">
-    <h1 class="name"><span class="name-text">{PERSON.givenName} {PERSON.familyName}</span></h1>
+    <h1 class="name" aria-label={PERSON.name}>
+      <span class="name-text" aria-hidden="true">
+        {
+          nameChars.map((char, index) =>
+            char === ' ' ? (
+              ' '
+            ) : (
+              <span class="letter" style={`--i:${index}`}>
+                {char}
+              </span>
+            ),
+          )
+        }
+      </span>
+    </h1>
     <p class="lead">Hello World. 👋<!-- taste-skill-ignore: the author's own greeting --></p>
   </Fragment>
 
