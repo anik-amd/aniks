@@ -423,8 +423,8 @@
   }
 
   .site-footer {
-    font-family: var(--serif);
-    font-size: 0.9375rem;
+    font-family: var(--sans);
+    font-size: 0.875rem;
     letter-spacing: 0.01em;
     color: var(--muted);
     /* Lining figures: the 6 sits on the baseline with the rest. */
