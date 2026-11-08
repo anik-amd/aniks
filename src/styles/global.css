@@ -220,12 +220,12 @@
     text-wrap: pretty;
   }
 
-  /* The location mark sits inline, in the accent colour. */
+  /* The location mark sits inline, tight against the city. */
   .pin {
     display: inline-block;
     width: 0.9em;
     height: 0.9em;
-    margin-right: 0.12em;
+    margin-right: 0.15em;
     vertical-align: -0.08em;
     color: var(--accent);
   }

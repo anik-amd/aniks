@@ -14,6 +14,8 @@ export const PERSON = {
   jobTitle: 'MSc student in Data Science',
   city: 'Dhaka',
   country: 'Bangladesh',
+  university: 'BUET',
+  universityUrl: 'https://www.buet.ac.bd/',
   email: 'anikahmed0091@gmail.com',
 } as const;
 
