@@ -81,7 +81,21 @@ const fullTitle = title === SITE.title ? `${SITE.name} — data science, open so
         <slot />
       </main>
       <footer class="site-footer">
-        <p>© {new Date().getFullYear()} {SITE.name}</p>
+        <p class="footer-copy">
+          <svg
+            class="footer-mark"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <circle cx="12" cy="12" r="9" />
+            <path d="M15.4 9.3a4.3 4.3 0 1 0 0 5.4" />
+          </svg>{new Date().getFullYear()} {SITE.name}
+        </p>
         <p>
           <a class="footer-link" href={SITE.repo} target="_blank" rel="noopener noreferrer">
             <svg
