@@ -72,10 +72,11 @@ const structuredData = {
       >
         <path d="M12 21s-6.5-5.4-6.5-10a6.5 6.5 0 1 1 13 0c0 4.6-6.5 10-6.5 10Z" />
         <circle cx="12" cy="11" r="2.4" />
-      </svg><a class="place" href={PERSON.cityUrl}>{PERSON.city}, {PERSON.country}</a>.
+      </svg><a class="place" href={PERSON.cityUrl} target="_blank" rel="noopener noreferrer">{PERSON.city}, {PERSON.country}</a>.
     </p>
     <p>
-      Currently doing my MSc in Data Science at <a href={PERSON.universityUrl}>{PERSON.university}</a>,
+      Currently doing my MSc in Data Science at{' '}
+      <a href={PERSON.universityUrl} target="_blank" rel="noopener noreferrer">{PERSON.university}</a>,
       figuring out how to make machines actually useful instead of just profitable.
     </p>
     <p>
@@ -105,22 +106,29 @@ const structuredData = {
         </h2>
         <p class="section-lede">{section.lede}</p>
         <ul class="links">
-          {section.links.map((link) => (
-            <li>
-              <a href={link.href} rel="me">
-                <svg
-                  class="link-icon"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  focusable="false"
+          {section.links.map((link) => {
+            const external = link.href.startsWith('http');
+            return (
+              <li>
+                <a
+                  href={link.href}
+                  rel={external ? 'me noopener noreferrer' : 'me'}
+                  target={external ? '_blank' : undefined}
                 >
-                  <path d={LINK_ICONS[link.icon]} />
-                </svg>
-                <span class="link-label">{link.label}</span>
-              </a>
-            </li>
-          ))}
+                  <svg
+                    class="link-icon"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d={LINK_ICONS[link.icon]} />
+                  </svg>
+                  <span class="link-label">{link.label}</span>
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </section>
     ))
