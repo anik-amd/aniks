@@ -207,13 +207,12 @@
     text-wrap: pretty;
   }
 
-  /* One editorial gesture: the first paragraph opens with a raised initial. */
+  /* The opening initial grows upward from the baseline, not down into the next line. */
   .intro p:first-of-type::first-letter {
-    float: left;
-    font-size: 3.05em;
-    line-height: 0.8;
-    padding: 0.04em 0.1em 0 0;
+    font-size: 2.5em;
     font-weight: 600;
+    line-height: 0;
+    padding-right: 0.02em;
   }
 
   .section-title {
@@ -300,8 +299,8 @@
     position: relative;
     display: inline-grid;
     place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
     color: var(--muted);
     transition: color 120ms ease;
   }
@@ -327,10 +326,10 @@
   /* The little A marks the system (auto) state. */
   .theme-toggle .auto {
     position: absolute;
-    right: -0.1rem;
-    bottom: -0.1rem;
+    right: -0.2rem;
+    bottom: -0.15rem;
     font-family: var(--sans);
-    font-size: 0.625rem;
+    font-size: 0.6875rem;
     font-weight: 600;
     line-height: 1;
     letter-spacing: 0.01em;
