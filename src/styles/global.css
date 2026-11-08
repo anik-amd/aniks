@@ -260,11 +260,11 @@
       opacity: 1;
     }
     40% {
-      left: calc(100% + 0.45rem);
+      left: calc(100% + 0.925rem);
       opacity: 1;
     }
     48% {
-      left: calc(100% + 0.45rem);
+      left: calc(100% + 0.925rem);
       opacity: 0;
     }
     50% {
