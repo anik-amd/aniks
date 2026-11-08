@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+import { PERSON, QUOTE, SAME_AS, SECTIONS, SITE } from '../consts';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${SITE.url}/#person`,
+  name: PERSON.name,
+  alternateName: PERSON.alternateName,
+  url: `${SITE.url}/`,
+  image: `${SITE.url}${SITE.ogImage}`,
+  jobTitle: PERSON.jobTitle,
+  email: `mailto:${PERSON.email}`,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: PERSON.city,
+    addressCountry: 'BD',
+  },
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Bangladesh University of Engineering and Technology',
+    alternateName: 'BUET',
+  },
+  knowsAbout: [
+    'Data science',
+    'Machine learning',
+    'Open-source software',
+    'Decentralized systems',
+    'Cybersecurity',
+  ],
+  sameAs: SAME_AS,
+};
+---
+
+<Base>
+  <Fragment slot="masthead">
+    <div>
+      <h1 class="name">{PERSON.name}</h1>
+      <p class="lead">Hello World. 👋</p>
+    </div>
+  </Fragment>
+
+  <div class="intro">
+    <p>
+      I'm {PERSON.name}. Based in {PERSON.city}, {PERSON.country}.
+    </p>
+    <p>
+      Currently doing my MSc in Data Science at BUET, figuring out how to make machines actually
+      useful instead of just profitable.
+    </p>
+    <p>
+      I care about open-source tech, decentralized systems, and the occasional deep dive into
+      cybersecurity. I read too much, watch too many weird movies, and keep a diary I'll probably
+      never finish.
+    </p>
+  </div>
+
+  {
+    SECTIONS.map((section) => (
+      <section class="section" aria-labelledby={`${section.id}-title`}>
+        <h2 class="section-title" id={`${section.id}-title`}>
+          {section.title}
+        </h2>
+        <p class="section-lede">{section.lede}</p>
+        <ul class="links">
+          {section.links.map((link) => (
+            <li>
+              <a href={link.href} rel="me">
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+
+  <figure class="quote">
+    <blockquote class="quote-text">
+      <p>{QUOTE.text}</p>
+    </blockquote>
+    <figcaption class="quote-author">{QUOTE.author}</figcaption>
+  </figure>
+
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+</Base>

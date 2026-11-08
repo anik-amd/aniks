@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+# Keeps the free Actions allowance in check: one run per branch, older runs cancelled.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # No lockfile yet, so install rather than ci. Swap to `npm ci` once
+      # package-lock.json is committed.
+      - name: Install
+        run: npm install --no-audit --no-fund
+
+      - name: Build
+        run: npm run build
+
+      - name: Check output
+        run: |
+          test -f dist/index.html || { echo "missing dist/index.html"; exit 1; }
+          test -f dist/404.html || { echo "missing dist/404.html"; exit 1; }
+          test -f dist/og.png || { echo "missing dist/og.png"; exit 1; }
+          grep -q "application/ld+json" dist/index.html || { echo "missing structured data"; exit 1; }
+          echo "output looks sane"

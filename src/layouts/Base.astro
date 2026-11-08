@@ -1,0 +1,88 @@
+---
+import { SITE } from '../consts';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import '../styles/global.css';
+
+type Props = {
+  title?: string;
+  description?: string;
+  /** Absolute or root-relative path to a social preview image. */
+  image?: string;
+  /** Extra content rendered inside <head>, e.g. structured data. */
+  noindex?: boolean;
+};
+
+const {
+  title = SITE.title,
+  description = SITE.description,
+  image = SITE.ogImage,
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).href;
+const ogImage = new URL(image, Astro.site ?? SITE.url).href;
+const fullTitle = title === SITE.title ? `${SITE.name} — data science, open source, and good books` : `${title} — ${SITE.name}`;
+---
+
+<!doctype html>
+<html lang={SITE.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <meta name="author" content={SITE.name} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f8f5" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c100f" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={`${SITE.name} — personal site`} />
+    <meta property="og:locale" content="en_GB" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem('theme');
+          if (stored === 'light' || stored === 'dark') {
+            document.documentElement.dataset.theme = stored;
+          }
+        } catch {
+          /* storage can throw in private modes; system default is fine */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="page">
+      <header class="masthead">
+        <slot name="masthead" />
+        <ThemeToggle />
+      </header>
+      <main id="main">
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <p>
+          © {new Date().getFullYear()} {SITE.name}. Built with Astro, hosted on Cloudflare Pages.
+          No trackers, no cookies, no accounts.
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

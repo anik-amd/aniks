@@ -1,0 +1,64 @@
+---
+const options = [
+  { value: 'system', label: 'System' },
+  { value: 'light', label: 'Light' },
+  { value: 'dark', label: 'Dark' },
+] as const;
+---
+
+<div class="theme" role="group" aria-label="Colour theme">
+  {
+    options.map((option) => (
+      <button
+        type="button"
+        data-theme-set={option.value}
+        aria-pressed={option.value === 'system' ? 'true' : 'false'}
+      >
+        {option.label}
+      </button>
+    ))
+  }
+</div>
+
+<script is:inline>
+  (() => {
+    const root = document.documentElement;
+    const buttons = Array.from(document.querySelectorAll('[data-theme-set]'));
+    const key = 'theme';
+
+    const stored = (() => {
+      try {
+        return localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    })();
+
+    const current = stored === 'light' || stored === 'dark' ? stored : 'system';
+
+    const apply = (value) => {
+      if (value === 'system') {
+        delete root.dataset.theme;
+      } else {
+        root.dataset.theme = value;
+      }
+      for (const button of buttons) {
+        button.setAttribute('aria-pressed', String(button.dataset.themeSet === value));
+      }
+    };
+
+    apply(current);
+
+    for (const button of buttons) {
+      button.addEventListener('click', () => {
+        const value = button.dataset.themeSet;
+        try {
+          localStorage.setItem(key, value);
+        } catch {
+          /* ignore, the choice just will not persist */
+        }
+        apply(value);
+      });
+    }
+  })();
+</script>
