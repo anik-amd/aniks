@@ -28,4 +28,4 @@ in `src/layouts/Base.astro` runs before first paint, so there is no flash.
 
 ## Licence
 
-MIT for the code, © Anik Ahmed for the words. See [`LICENSE`](LICENSE).
+MIT. See [`LICENSE`](LICENSE).
