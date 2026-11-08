@@ -130,7 +130,7 @@
     text-decoration-thickness: 1px;
     text-underline-offset: 0.24em;
     text-decoration-color: var(--accent);
-    transition: color 120ms ease, text-decoration-color 120ms ease;
+    transition: color 320ms ease, text-decoration-color 200ms ease;
   }
 
   a:hover {
@@ -387,7 +387,7 @@
     text-decoration-thickness: 1px;
     text-underline-offset: 0.24em;
     text-decoration-color: var(--accent);
-    transition: color 120ms ease, text-decoration-color 120ms ease;
+    transition: color 320ms ease, text-decoration-color 200ms ease;
   }
 
   /* Brand marks stay muted until the link is hovered or focused. */
@@ -397,7 +397,7 @@
     margin-right: 0.32em;
     vertical-align: -0.05em;
     color: var(--muted);
-    transition: color 120ms ease;
+    transition: color 320ms ease;
   }
 
   .links a:hover .link-icon,
