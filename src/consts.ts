@@ -9,6 +9,7 @@ export const SITE = {
   locale: 'en',
   ogImage: '/og.png',
   repo: 'https://github.com/anik-amd/aniks',
+  license: 'https://github.com/anik-amd/aniks/blob/main/LICENSE',
 } as const;
 
 export const PERSON = {
