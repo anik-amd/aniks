@@ -212,10 +212,14 @@
     text-wrap: balance;
   }
 
-  /* One line, two weights: the family name steps back to light. */
-  .name-alt {
-    font-weight: 400;
-    letter-spacing: -0.03em;
+  /* A short accent bar sits over the name, like a printer's mark. */
+  .name::before {
+    content: '';
+    display: block;
+    width: 2.5rem;
+    height: 3px;
+    margin-bottom: 1.05rem;
+    background-color: var(--accent);
   }
 
   .lead {
