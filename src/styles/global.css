@@ -223,7 +223,7 @@
     display: inline-block;
     opacity: 0;
     animation: letter-in 200ms ease-out forwards;
-    animation-delay: calc(0.4s + var(--i, 0) * 0.115s);
+    animation-delay: calc(0.36s + var(--i, 0) * 0.113s);
   }
 
   @keyframes letter-in {
@@ -247,8 +247,8 @@
     height: 0.84em;
     background-color: var(--accent);
     animation:
-      sweep 2.4s linear 0.3s 1 both,
-      pulse 4.2s ease-in-out 2.7s infinite;
+      sweep 2.8s linear 0.3s 1 both,
+      pulse 4.2s ease-in-out 3.1s infinite;
   }
 
   @keyframes sweep {
@@ -256,22 +256,26 @@
       left: 0;
       opacity: 0;
     }
-    10% {
+    8% {
       opacity: 1;
     }
-    44% {
-      left: calc(100% - 6px);
+    40% {
+      left: calc(100% + 0.45rem);
       opacity: 1;
     }
-    54% {
-      left: calc(100% - 6px);
+    48% {
+      left: calc(100% + 0.45rem);
       opacity: 0;
     }
-    56% {
+    50% {
       left: 0;
       opacity: 0;
     }
-    80% {
+    66% {
+      left: 0;
+      opacity: 0;
+    }
+    88% {
       left: 0;
       opacity: 1;
     }
