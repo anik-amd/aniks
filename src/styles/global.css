@@ -437,6 +437,11 @@
   }
 
   .site-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.35rem 1.25rem;
     font-family: var(--sans);
     font-size: 0.875rem;
     letter-spacing: 0.01em;
