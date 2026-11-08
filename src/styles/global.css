@@ -221,10 +221,10 @@
   .name-text::before {
     content: '';
     position: absolute;
-    left: -0.62rem;
-    top: 0.08em;
+    left: -0.95rem;
+    top: 0.02em;
     width: 6px;
-    height: 0.72em;
+    height: 0.84em;
     background-color: var(--accent);
     animation:
       sweep 2.2s cubic-bezier(0.65, 0, 0.35, 1) 0.35s 1 both,
@@ -233,7 +233,7 @@
 
   @keyframes sweep {
     0% {
-      left: -0.62rem;
+      left: -0.95rem;
       opacity: 0;
     }
     12% {
@@ -243,7 +243,7 @@
       left: calc(100% - 6px);
     }
     100% {
-      left: -0.62rem;
+      left: -0.95rem;
       opacity: 1;
     }
   }
