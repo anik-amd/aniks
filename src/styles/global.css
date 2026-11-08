@@ -298,19 +298,19 @@
 
   .theme {
     display: inline-flex;
-    align-items: baseline;
-    gap: 0.65rem;
-    font-family: var(--sans);
-    font-size: 0.875rem;
+    align-items: center;
+    gap: 0.15rem;
   }
 
   .theme button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
     color: var(--muted);
-    padding-block: 0.15rem;
-    text-decoration-line: underline;
-    text-decoration-color: transparent;
-    text-underline-offset: 0.28em;
-    transition: color 120ms ease, text-decoration-color 120ms ease;
+    transition: color 120ms ease;
   }
 
   .theme button:hover {
@@ -318,8 +318,20 @@
   }
 
   .theme button[aria-pressed='true'] {
-    color: var(--text);
-    text-decoration-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* A filled dot marks the active state, so colour is not the only cue. */
+  .theme button[aria-pressed='true']::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0.1rem;
+    width: 0.25rem;
+    height: 0.25rem;
+    margin-left: -0.125rem;
+    border-radius: 50%;
+    background-color: currentColor;
   }
 
   .skip-link {
