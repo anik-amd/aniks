@@ -437,12 +437,30 @@
   }
 
   .site-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.35rem 1.25rem;
     font-family: var(--sans);
     font-size: 0.875rem;
     letter-spacing: 0.01em;
     color: var(--muted);
     /* Lining figures: the 6 sits on the baseline with the rest. */
     font-variant-numeric: lining-nums;
+  }
+
+  /* The underline belongs to the word, not the mark. */
+  .site-footer a {
+    text-decoration: none;
+  }
+
+  .footer-mark {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.3em;
+    vertical-align: -0.15em;
+    color: var(--muted);
   }
 
   .theme-toggle {

@@ -112,8 +112,18 @@ jobs:
 
       - name: Smoke test production
         run: |
-          sleep 5
-          body=$(curl -fsS https://aniks.pages.dev/)
-          echo "$body" | grep -q "Anik Ahmed" || { echo "production missing name"; exit 1; }
-          curl -fsS -o /dev/null -w "%{http_code}\n" https://aniks.pages.dev/404.html | grep -q 200
+          # Pages edges can serve the previous build for a few seconds, so poll
+          # with a cache-busting query until the new marker shows up.
+          url="https://aniks.pages.dev/?smoke=${GITHUB_RUN_ID}"
+          body=""
+          for attempt in $(seq 1 12); do
+            body=$(curl -fsS "$url" || true)
+            if echo "$body" | grep -q 'data-theme-cycle'; then
+              echo "production serves the new build (attempt ${attempt})"
+              break
+            fi
+            sleep 5
+          done
+          echo "$body" | grep -q 'data-theme-cycle' || { echo "production still serves an old build"; exit 1; }
+          curl -fsS -o /dev/null -w "%{http_code}\n" "https://aniks.pages.dev/404.html?smoke=${GITHUB_RUN_ID}" | grep -q 200
           echo "production looks alive"

@@ -1,4 +1,4 @@
-# aniks
+# Anik Ahmed — personal site
 
 Personal site for Anik Ahmed — <https://aniks.pages.dev>.
 
