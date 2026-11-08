@@ -196,7 +196,7 @@
 
 @layer components {
   .name {
-    font-size: clamp(2.9rem, 14.5vw, 5.75rem);
+    font-size: clamp(2.7rem, 12vw, 4.75rem);
     font-weight: 600;
     line-height: 0.92;
     letter-spacing: -0.035em;
