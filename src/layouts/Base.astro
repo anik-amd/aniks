@@ -1,5 +1,6 @@
 ---
 import { SITE } from '../consts';
+import { LINK_ICONS } from '../link-icons';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import '../styles/global.css';
 
@@ -82,7 +83,18 @@ const fullTitle = title === SITE.title ? `${SITE.name} — data science, open so
       <footer class="site-footer">
         <p>© {new Date().getFullYear()} {SITE.name}</p>
         <p>
-          <a class="footer-link" href={SITE.repo} target="_blank" rel="noopener noreferrer">Code</a>
+          <a class="footer-link" href={SITE.repo} target="_blank" rel="noopener noreferrer">
+            <svg
+              class="link-icon"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d={LINK_ICONS.github} />
+            </svg>
+            <span class="link-label">Code</span>
+          </a>
         </p>
       </footer>
     </div>

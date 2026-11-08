@@ -450,6 +450,11 @@
     font-variant-numeric: lining-nums;
   }
 
+  /* The underline belongs to the word, not the mark. */
+  .site-footer a {
+    text-decoration: none;
+  }
+
   .theme-toggle {
     display: inline-grid;
     place-items: center;
