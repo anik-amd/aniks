@@ -212,6 +212,13 @@
     text-wrap: balance;
   }
 
+  /* The family name leans: a small signature, not another bold block. */
+  .name-alt {
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
   .lead {
     font-size: 1.25rem;
     font-style: italic;

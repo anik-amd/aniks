@@ -12,6 +12,8 @@ export const SITE = {
 
 export const PERSON = {
   name: 'Anik Ahmed',
+  givenName: 'Anik',
+  familyName: 'Ahmed',
   alternateName: 'aniks',
   jobTitle: 'MSc student in Data Science',
   city: 'Dhaka',

@@ -36,7 +36,9 @@ const structuredData = {
 
 <Base>
   <Fragment slot="masthead">
-    <h1 class="name">{PERSON.name}</h1>
+    <h1 class="name">
+      {PERSON.givenName} <em class="name-alt">{PERSON.familyName}</em>
+    </h1>
     <p class="lead">Hello World. 👋<!-- taste-skill-ignore: the author's own greeting --></p>
   </Fragment>
 
