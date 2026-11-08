@@ -45,9 +45,23 @@ Links and copy live in `src/consts.ts`. Adding a link means editing that file, n
 ```
 npm install
 npm run build     # writes dist/
+npm test          # scripts/check-build.mjs, checks dist/
 ```
 
-CI runs on every pull request: install, build, then sanity-check `dist/`.
+## Pipeline
+
+GitHub Actions owns build, test and deploy. Cloudflare Pages automatic deployments
+must stay disabled.
+
+1. Pull request: install, build, `npm test`, upload `dist/`, then deploy a Cloudflare
+   **preview** for the branch. The author reviews the preview URL before anything ships.
+2. Merge to `main`: same build and tests, then `wrangler pages deploy` to production,
+   followed by a smoke test against <https://aniks.pages.dev>.
+
+Never deploy straight to production. Preview first, wait for confirmation, then merge.
+
+Secrets required: `CLOUDFLARE_API_TOKEN` (Account → Cloudflare Pages → Edit) and
+`CLOUDFLARE_ACCOUNT_ID`.
 
 ## Design contract
 
@@ -68,7 +82,10 @@ Keep these intact when editing: canonical URL, `og:*` and `twitter:*` tags, JSON
 
 ## Deploy
 
-Cloudflare Pages project `aniks`, production branch `main`, build command
-`npm run build`, output directory `dist`, `NODE_VERSION=22`. Pushes to `main` deploy;
-other branches get preview URLs. Do not change the project name — it is the subdomain
-and cannot be renamed.
+Cloudflare Pages project `aniks` (project name is the subdomain and cannot be renamed).
+Deployment is performed by GitHub Actions with `wrangler pages deploy`, not by
+Cloudflare's own Git builds — keep "Automatic deployments" disabled in the Pages
+settings so builds are not duplicated.
+
+- Pull requests → preview deployment on branch alias `<branch>.aniks.pages.dev`
+- `main` → production deployment on <https://aniks.pages.dev>, then a smoke test

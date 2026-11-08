@@ -1,10 +1,12 @@
 name: CI
 
 on:
+  push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
-# Keeps the free Actions allowance in check: one run per branch, older runs cancelled.
+# One run per ref; new pushes cancel older ones. Keeps Actions minutes down.
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -14,15 +16,13 @@ permissions:
 
 jobs:
   build:
-    name: Build
+    name: Build and test
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 10
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
 
@@ -34,10 +34,86 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Check output
+      - name: Test build output
+        run: npm test
+
+      - name: Upload dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7
+          if-no-files-found: error
+
+  preview:
+    name: Preview deploy
+    # Every pull request gets its own Cloudflare preview URL. Nothing reaches
+    # production until the pull request is merged.
+    if: github.event_name == 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Check credentials
+        id: creds
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          test -f dist/index.html || { echo "missing dist/index.html"; exit 1; }
-          test -f dist/404.html || { echo "missing dist/404.html"; exit 1; }
-          test -f dist/og.png || { echo "missing dist/og.png"; exit 1; }
-          grep -q "application/ld+json" dist/index.html || { echo "missing structured data"; exit 1; }
-          echo "output looks sane"
+          if [ -z "$TOKEN" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::CLOUDFLARE_API_TOKEN is not set, skipping the preview deploy."
+          fi
+
+      - name: Deploy preview
+        if: steps.creds.outputs.skip != 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx --yes wrangler@4 pages deploy dist \
+            --project-name=aniks \
+            --branch="${GITHUB_HEAD_REF}" \
+            --commit-dirty=true | tee deploy.log
+          url=$(grep -Eo 'https://[a-z0-9]+\.aniks\.pages\.dev' deploy.log | head -n1)
+          alias_url="https://$(echo "${GITHUB_HEAD_REF}" | tr '/' '-' | tr '[:upper:]' '[:lower:]').aniks.pages.dev"
+          {
+            echo "### Preview ready"
+            echo ""
+            echo "- Deployment: ${url}"
+            echo "- Branch alias: ${alias_url}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    name: Production deploy
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Deploy production
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx --yes wrangler@4 pages deploy dist \
+            --project-name=aniks \
+            --branch=main \
+            --commit-dirty=true
+
+      - name: Smoke test production
+        run: |
+          sleep 5
+          body=$(curl -fsS https://aniks.pages.dev/)
+          echo "$body" | grep -q "Anik Ahmed" || { echo "production missing name"; exit 1; }
+          curl -fsS -o /dev/null -w "%{http_code}\n" https://aniks.pages.dev/404.html | grep -q 200
+          echo "production looks alive"
