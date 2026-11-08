@@ -80,8 +80,9 @@ Secrets required: `CLOUDFLARE_API_TOKEN` (Account → Cloudflare Pages → Edit)
   the page's only field of colour (`--panel`), opened by an accent quotation mark.
 - Links sit in a wrapped row with generous gaps and no separator glyph; underlines use
   the accent.
-- Motion is CSS only: a 180ms colour and icon transition, plus a short staggered
-  entrance on first paint. Everything is disabled under `prefers-reduced-motion`.
+- Motion is CSS only: a 320ms colour fade on theme change, a 180ms icon swap, and a
+  short staggered entrance on first paint. Everything is disabled under
+  `prefers-reduced-motion`.
 
 ## SEO invariants
 

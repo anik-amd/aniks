@@ -92,13 +92,13 @@
 @layer base {
   html {
     background-color: var(--bg);
-    transition: background-color 180ms ease;
+    transition: background-color 320ms ease;
   }
 
   body {
     background-color: var(--bg);
     color: var(--text);
-    transition: background-color 180ms ease, color 180ms ease;
+    transition: background-color 320ms ease, color 320ms ease;
     font-family: var(--serif);
     font-size: 1.0625rem;
     line-height: 1.62;
@@ -107,6 +107,16 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     min-height: 100dvh;
+  }
+
+  /* Theme changes ease through every element, not just the page colour. */
+  :where(body *) {
+    transition:
+      background-color 320ms ease,
+      color 320ms ease,
+      border-color 320ms ease,
+      fill 320ms ease,
+      stroke 320ms ease;
   }
 
   ::selection {
@@ -195,7 +205,7 @@
     margin-inline: calc(var(--pad) * -1);
     padding: clamp(1.75rem, 5vw, 2.75rem) var(--pad) clamp(1.6rem, 4vw, 2.25rem);
     background-color: var(--panel);
-    transition: background-color 180ms ease;
+    transition: background-color 320ms ease;
   }
 
   .site-footer {
@@ -607,7 +617,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   html,
-  body {
+  body,
+  :where(body *) {
     transition: none;
   }
 }
