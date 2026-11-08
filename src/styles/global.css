@@ -1,25 +1,14 @@
 @layer reset, base, layout, components;
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
   --bg: #f7f8f5;
-  --bg: light-dark(#f7f8f5, #0c100f);
-
   --text: #14181a;
-  --text: light-dark(#14181a, #e7ece8);
-
   --muted: #5b6660;
-  --muted: light-dark(#5b6660, #94a19b);
-
   --rule: #d2d9d3;
-  --rule: light-dark(#d2d9d3, #232c28);
-
   --accent: #2c6b4f;
-  --accent: light-dark(#2c6b4f, #8fd3ae);
-
   --selection: #d6e7dc;
-  --selection: light-dark(#d6e7dc, #1b3529);
 
   --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia,
     ui-serif, serif;
@@ -28,12 +17,34 @@
   --measure: 34rem;
 }
 
+/* Explicit choice wins over the system preference. */
 :root[data-theme='light'] {
   color-scheme: light;
 }
 
 :root[data-theme='dark'] {
   color-scheme: dark;
+
+  --bg: #0c100f;
+  --text: #e7ece8;
+  --muted: #94a19b;
+  --rule: #232c28;
+  --accent: #8fd3ae;
+  --selection: #1b3529;
+}
+
+/* System default: follow prefers-color-scheme unless light was chosen explicitly. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --bg: #0c100f;
+    --text: #e7ece8;
+    --muted: #94a19b;
+    --rule: #232c28;
+    --accent: #8fd3ae;
+    --selection: #1b3529;
+  }
 }
 
 @layer reset {

@@ -65,7 +65,10 @@ Secrets required: `CLOUDFLARE_API_TOKEN` (Account → Cloudflare Pages → Edit)
 
 ## Design contract
 
-- Palette is driven by CSS custom properties using `light-dark()`. Do not hardcode colours.
+- Palette is driven by CSS custom properties. Do not hardcode colours; add a token and
+  define it in all three blocks (`:root`, `:root[data-theme='dark']`, and the
+  `prefers-color-scheme` media query). `light-dark()` is deliberately avoided — it
+  resolved inconsistently across elements and broke contrast.
 - Theme states are `system`, `light`, `dark`, stored in `localStorage` under `theme`.
   `system` means no `data-theme` attribute on `<html>`. The inline script in `Base.astro`
   must keep running before first paint to avoid a flash.
