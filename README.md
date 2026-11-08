@@ -2,8 +2,7 @@
 
 This is my personal site.
 
-I built it as a set of static pages with [Astro](https://astro.build) and deploy it to
-Cloudflare Pages.
+I built it as a set of static pages with [Astro](https://astro.build).
 
 ## Editing
 
@@ -19,14 +18,7 @@ npm run build   # output in dist/
 npm test        # checks the built pages
 ```
 
-Astro 7 needs Node >= 22.23.4. Builds run in CI and on Cloudflare Pages.
-
-## Deploy
-
-GitHub Actions builds, tests and deploys with `wrangler pages deploy`.
-
-- pull request → preview deployment for the branch
-- `main` → production, then a smoke test
+Astro 7 needs Node >= 22.23.4.
 
 ## Theme
 
