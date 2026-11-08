@@ -1,0 +1,145 @@
+---
+import Base from '../layouts/Base.astro';
+import { PERSON, QUOTE, SAME_AS, SECTIONS, SITE } from '../consts';
+import { LINK_ICONS } from '../link-icons';
+
+const nameChars = [...PERSON.name];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${SITE.url}/#person`,
+  name: PERSON.name,
+  alternateName: PERSON.alternateName,
+  url: `${SITE.url}/`,
+  image: `${SITE.url}${SITE.ogImage}`,
+  jobTitle: PERSON.jobTitle,
+  email: `mailto:${PERSON.email}`,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: PERSON.city,
+    addressCountry: 'BD',
+  },
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Bangladesh University of Engineering and Technology',
+    alternateName: 'BUET',
+  },
+  knowsAbout: [
+    'Data science',
+    'Machine learning',
+    'Open-source software',
+    'Decentralized systems',
+    'Cybersecurity',
+  ],
+  sameAs: SAME_AS,
+};
+---
+
+<Base>
+  <Fragment slot="masthead">
+    <h1 class="name" aria-label={PERSON.name}>
+      <span class="name-text" aria-hidden="true">
+        {
+          nameChars.map((char, index) =>
+            char === ' ' ? (
+              ' '
+            ) : (
+              <span class="letter" style={`--i:${index}`}>
+                {char}
+              </span>
+            ),
+          )
+        }
+      </span>
+    </h1>
+    <p class="lead">Hello World. 👋<!-- taste-skill-ignore: the author's own greeting --></p>
+  </Fragment>
+
+  <div class="intro">
+    <p>
+      <span class="initial">I</span> am {PERSON.name}. Based in{' '}
+      <svg
+        class="pin"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="M12 21s-6.5-5.4-6.5-10a6.5 6.5 0 1 1 13 0c0 4.6-6.5 10-6.5 10Z" />
+        <circle cx="12" cy="11" r="2.4" />
+      </svg><a class="place" href={PERSON.cityUrl} target="_blank" rel="noopener noreferrer">{PERSON.city}, {PERSON.country}</a>.
+    </p>
+    <p>
+      Currently doing my MSc in Data Science at{' '}
+      <a href={PERSON.universityUrl} target="_blank" rel="noopener noreferrer">{PERSON.university}</a>,
+      figuring out how to make machines actually useful instead of just profitable.
+    </p>
+    <p>
+      I care about open-source tech, decentralized systems, and the occasional deep dive into
+      cybersecurity. I read too much, watch too many weird movies, and keep a diary I'll probably
+      never finish.
+    </p>
+  </div>
+
+  {
+    SECTIONS.map((section) => (
+      <section class="section" aria-labelledby={`${section.id}-title`}>
+        <h2 class="section-title" id={`${section.id}-title`}>
+          <svg
+            class="section-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            focusable="false"
+            set:html={section.icon}
+          />
+          <span>{section.title}</span>
+        </h2>
+        <p class="section-lede">{section.lede}</p>
+        <ul class="links">
+          {section.links.map((link) => {
+            const external = link.href.startsWith('http');
+            return (
+              <li>
+                <a
+                  href={link.href}
+                  rel={external ? 'me noopener noreferrer' : 'me'}
+                  target={external ? '_blank' : undefined}
+                >
+                  <svg
+                    class="link-icon"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d={LINK_ICONS[link.icon]} />
+                  </svg>
+                  <span class="link-label">{link.label}</span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    ))
+  }
+
+  <figure class="quote">
+    <blockquote class="quote-text">
+      <p>{QUOTE.text}</p>
+    </blockquote>
+    <figcaption class="quote-author">{QUOTE.author}</figcaption>
+  </figure>
+
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+</Base>

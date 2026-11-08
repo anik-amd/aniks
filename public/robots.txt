@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aniks.pages.dev/sitemap.xml
