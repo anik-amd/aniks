@@ -125,5 +125,6 @@ jobs:
             sleep 5
           done
           echo "$body" | grep -q 'data-theme-cycle' || { echo "production still serves an old build"; exit 1; }
-          curl -fsS -o /dev/null -w "%{http_code}\n" "https://aniks.pages.dev/404.html?smoke=${GITHUB_RUN_ID}" | grep -q 200
+          code=$(curl -s -o /dev/null -w "%{http_code}" "https://aniks.pages.dev/not-a-real-page?smoke=${GITHUB_RUN_ID}")
+          [ "$code" = "404" ] || { echo "unknown path returned ${code}, expected 404"; exit 1; }
           echo "production looks alive"
