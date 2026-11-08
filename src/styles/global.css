@@ -150,17 +150,26 @@
 
   .masthead {
     display: grid;
-    gap: clamp(1.5rem, 5vw, 2.5rem);
   }
 
-  .topbar {
-    display: flex;
-    justify-content: flex-end;
-  }
-
+  /* The name holds the left, the theme control sits at the right shoulder. */
   .identity {
     display: grid;
-    gap: clamp(2rem, 5vw, 2.75rem);
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 1rem;
+    row-gap: clamp(1.75rem, 4vw, 2.4rem);
+  }
+
+  .identity > .name,
+  .identity > .lead {
+    grid-column: 1;
+  }
+
+  .identity > .theme-toggle {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+    justify-self: end;
   }
 
   /* The greeting belongs with the paragraphs, not with the name. */
@@ -175,7 +184,7 @@
   /* Section: title and note hang in a left column, links sit in the right one. */
   .section {
     display: grid;
-    grid-template-columns: minmax(0, 10.5rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
     column-gap: 2rem;
     margin-top: clamp(3.25rem, 8vw, 4.5rem);
   }
@@ -241,10 +250,10 @@
 
   /* The mark sits on the title's first line, in the accent colour. */
   .section-icon {
-    width: 0.95em;
-    height: 0.95em;
-    margin-right: 0.4em;
-    vertical-align: -0.1em;
+    width: 0.9em;
+    height: 0.9em;
+    margin-right: 0.35em;
+    vertical-align: -0.08em;
     color: var(--accent);
   }
 
