@@ -205,9 +205,6 @@
 
 @layer components {
   .name {
-    position: relative;
-    margin-left: -1.15rem;
-    padding-left: 1.15rem;
     font-size: clamp(2.4rem, 9vw, 4rem);
     font-weight: 600;
     line-height: 0.92;
@@ -215,15 +212,50 @@
     text-wrap: balance;
   }
 
-  /* A short accent rule stands at the name's left shoulder. */
-  .name::before {
+  .name-text {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* First the rule crosses the name once to unveil it, then it rests and pulses. */
+  .name-text::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0.05em;
-    width: 3px;
-    height: 0.8em;
+    left: -0.62rem;
+    top: 0.08em;
+    width: 6px;
+    height: 0.72em;
     background-color: var(--accent);
+    animation:
+      sweep 2.2s cubic-bezier(0.65, 0, 0.35, 1) 0.35s 1 both,
+      pulse 3.6s ease-in-out 2.55s infinite;
+  }
+
+  @keyframes sweep {
+    0% {
+      left: -0.62rem;
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+    }
+    50% {
+      left: calc(100% - 6px);
+    }
+    100% {
+      left: -0.62rem;
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.2;
+    }
   }
 
   .lead {
@@ -520,6 +552,10 @@
     .section,
     .quote,
     .site-footer {
+      animation: none;
+    }
+
+    .name-text::before {
       animation: none;
     }
   }
