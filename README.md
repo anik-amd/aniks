@@ -1,15 +1,15 @@
 # Anik Ahmed — personal site
 
-This is my personal site: <https://aniks.pages.dev>.
+This is my personal site.
 
 I built it as a set of static pages with [Astro](https://astro.build) and deploy it to
-Cloudflare Pages. No client-side framework, no web fonts, no trackers, no analytics.
+Cloudflare Pages.
 
 ## Editing
 
 All copy and links live in [`src/consts.ts`](src/consts.ts); the styling lives in
-[`src/styles/global.css`](src/styles/global.css). [`AGENTS.md`](AGENTS.md) records the
-rules I follow when changing either.
+[`src/styles/global.css`](src/styles/global.css). See [`AGENTS.md`](AGENTS.md) for rules
+for agents.
 
 ## Build
 
@@ -27,8 +27,8 @@ in CI and on Cloudflare Pages.
 GitHub Actions builds, tests and deploys with `wrangler pages deploy`. Cloudflare's own Git
 builds are switched off so nothing deploys twice.
 
-- pull request → preview at `<branch>.aniks.pages.dev`
-- `main` → production at <https://aniks.pages.dev>, then a smoke test
+- pull request → preview deployment for the branch
+- `main` → production, then a smoke test
 
 ## Theme
 
