@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { PERSON, QUOTE, SAME_AS, SECTIONS, SITE } from '../consts';
+import { LINK_ICONS } from '../link-icons';
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -91,6 +92,15 @@ const structuredData = {
           {section.links.map((link) => (
             <li>
               <a href={link.href} rel="me">
+                <svg
+                  class="link-icon"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d={LINK_ICONS[link.icon]} />
+                </svg>
                 {link.label}
               </a>
             </li>

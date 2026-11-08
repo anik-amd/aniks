@@ -1,3 +1,5 @@
+import type { LinkIcon } from './link-icons';
+
 export const SITE = {
   url: 'https://aniks.pages.dev',
   name: 'Anik Ahmed',
@@ -22,6 +24,8 @@ export const PERSON = {
 export type Link = {
   label: string;
   href: string;
+  /** Brand mark shown before the label. */
+  icon: LinkIcon;
   /** Used for the link's accessible name when the label alone is ambiguous. */
   note?: string;
 };
@@ -43,9 +47,9 @@ export const SECTIONS: Section[] = [
     icon: '<path d="M9 6 4 12l5 6M15 6l5 6-5 6" />',
     lede: 'Papers, repos & colabs.',
     links: [
-      { label: 'GitHub', href: 'https://github.com/anik-amd/' },
-      { label: 'GitLab', href: 'https://gitlab.com/anik-amd' },
-      { label: 'ORCID', href: 'https://orcid.org/0009-0000-5792-8991' },
+      { label: 'GitHub', href: 'https://github.com/anik-amd/', icon: 'github' },
+      { label: 'GitLab', href: 'https://gitlab.com/anik-amd', icon: 'gitlab' },
+      { label: 'ORCID', href: 'https://orcid.org/0009-0000-5792-8991', icon: 'orcid' },
     ],
   },
   {
@@ -55,10 +59,10 @@ export const SECTIONS: Section[] = [
     icon: '<rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3.5 7 8.5 6 8.5-6" />',
     lede: 'Discuss a project idea or just drop a hi!',
     links: [
-      { label: 'Mastodon', href: 'https://mastodon.social/@aniks' },
-      { label: 'Facebook', href: 'https://www.facebook.com/istiak.ahmed.anik0/' },
-      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mdanik9/' },
-      { label: 'Email', href: `mailto:${PERSON.email}` },
+      { label: 'Mastodon', href: 'https://mastodon.social/@aniks', icon: 'mastodon' },
+      { label: 'Facebook', href: 'https://www.facebook.com/istiak.ahmed.anik0/', icon: 'facebook' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mdanik9/', icon: 'linkedin' },
+      { label: 'Email', href: `mailto:${PERSON.email}`, icon: 'email' },
     ],
   },
   {
@@ -68,9 +72,9 @@ export const SECTIONS: Section[] = [
     icon: '<path d="M12 6.5C10.5 5 8.5 4.4 6 4.4H3v13h3c2.5 0 4.5.6 6 2.1 1.5-1.5 3.5-2.1 6-2.1h3v-13h-3c-2.5 0-4.5.6-6 2.1Z" /><path d="M12 6.5v13" />',
     lede: 'Books, music, and films that linger.',
     links: [
-      { label: 'Last.fm', href: 'https://www.last.fm/user/anik91' },
-      { label: 'Goodreads', href: 'https://www.goodreads.com/anik_amd' },
-      { label: 'Simkl', href: 'https://simkl.com/6430675/' },
+      { label: 'Last.fm', href: 'https://www.last.fm/user/anik91', icon: 'lastfm' },
+      { label: 'Goodreads', href: 'https://www.goodreads.com/anik_amd', icon: 'goodreads' },
+      { label: 'Simkl', href: 'https://simkl.com/6430675/', icon: 'simkl' },
     ],
   },
 ];
