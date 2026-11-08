@@ -14,6 +14,9 @@ Thumbs.db
 .vscode/
 .idea/
 
+# design skill working files
+.taste-skill/
+
 # env
 .env
 .env.*

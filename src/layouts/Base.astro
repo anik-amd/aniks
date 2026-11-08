@@ -71,17 +71,18 @@ const fullTitle = title === SITE.title ? `${SITE.name} — data science, open so
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="page">
       <header class="masthead">
-        <slot name="masthead" />
-        <ThemeToggle />
+        <div class="topbar">
+          <ThemeToggle />
+        </div>
+        <div class="identity">
+          <slot name="masthead" />
+        </div>
       </header>
       <main id="main">
         <slot />
       </main>
       <footer class="site-footer">
-        <p>
-          © {new Date().getFullYear()} {SITE.name}. Built with Astro, hosted on Cloudflare Pages.
-          No trackers, no cookies, no accounts.
-        </p>
+        <p>© {new Date().getFullYear()} {SITE.name}</p>
       </footer>
     </div>
   </body>

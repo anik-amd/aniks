@@ -1,20 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Anik Ahmed">
   <style>
-    .bg { fill: #0c100f; }
-    .fg { fill: #e7ece8; }
+    .ground { fill: #0c100f; }
+    .ink { fill: #e7ece8; }
+    .line { stroke: #e7ece8; }
+    .accent { fill: #8fd3ae; }
     @media (prefers-color-scheme: dark) {
-      .bg { fill: #e7ece8; }
-      .fg { fill: #0c100f; }
+      .ground { fill: #e7ece8; }
+      .ink { fill: #0c100f; }
+      .line { stroke: #0c100f; }
+      .accent { fill: #2c6b4f; }
     }
   </style>
-  <rect class="bg" width="64" height="64" rx="14" />
-  <text
-    class="fg"
-    x="32"
-    y="46"
-    text-anchor="middle"
-    font-family="Iowan Old Style, Palatino, Georgia, serif"
-    font-size="44"
-    font-weight="600"
-  >a</text>
+  <rect class="ground" width="64" height="64" rx="14" />
+  <!-- Three nodes, two links: a small decentralised network. -->
+  <path class="line" d="M20 43 L32 23 L44 43" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <circle class="ink" cx="20" cy="43" r="5.5" />
+  <circle class="ink" cx="44" cy="43" r="5.5" />
+  <circle class="accent" cx="32" cy="23" r="6.5" />
 </svg>

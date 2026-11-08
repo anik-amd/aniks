@@ -73,7 +73,10 @@ Secrets required: `CLOUDFLARE_API_TOKEN` (Account → Cloudflare Pages → Edit)
   `system` means no `data-theme` attribute on `<html>`. The inline script in `Base.astro`
   must keep running before first paint to avoid a flash.
 - Serif body, sans-serif only for small UI text. Measure stays under ~65 characters.
-- Sections are separated by 1px `--rule` borders. Links are separated by `~`.
+- The name is the page's one large thing. Sections are separated by space, not by rules;
+  section titles hang in a left column with their links in the right one. The quote is
+  the page's only field of colour (`--panel`), opened by an accent quotation mark.
+- Links are separated by `~`. Underlines use the accent.
 - Motion is limited to a 120ms colour transition, disabled under
   `prefers-reduced-motion`.
 
