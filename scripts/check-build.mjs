@@ -53,9 +53,11 @@ if (existsSync(path('index.html'))) {
   const h1Count = (html.match(/<h1[\s>]/g) ?? []).length;
   if (h1Count !== 1) fail(`expected exactly one <h1>, found ${h1Count}`);
 
-  // Theme switcher contract
+  // Theme switcher contract: one button cycles system -> light -> dark.
+  if (!html.includes('data-theme-cycle')) fail('theme cycle button missing');
+  if (!html.includes('data-theme-state="system"')) fail('theme initial state missing');
   for (const value of ['system', 'light', 'dark']) {
-    if (!html.includes(`data-theme-set="${value}"`)) fail(`theme option "${value}" missing`);
+    if (!html.includes(`'${value}'`)) fail(`theme state "${value}" missing from the cycle`);
   }
   if (!html.includes("localStorage.getItem('theme')")) fail('theme bootstrap script missing');
 

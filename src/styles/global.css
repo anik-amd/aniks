@@ -296,41 +296,44 @@
     color: var(--muted);
   }
 
-  .theme {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.15rem;
-  }
-
-  .theme button {
+  .theme-toggle {
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-grid;
+    place-items: center;
     width: 2.25rem;
     height: 2.25rem;
     color: var(--muted);
     transition: color 120ms ease;
   }
 
-  .theme button:hover {
+  .theme-toggle:hover {
     color: var(--text);
   }
 
-  .theme button[aria-pressed='true'] {
-    color: var(--accent);
+  .theme-toggle .icon {
+    display: none;
   }
 
-  /* A filled bar marks the active state, so colour is not the only cue. */
-  .theme button[aria-pressed='true']::after {
-    content: '';
+  .theme-toggle[data-theme-state='system'] .icon-system {
+    display: inline-flex;
+    position: relative;
+  }
+
+  .theme-toggle[data-theme-state='light'] .icon-light,
+  .theme-toggle[data-theme-state='dark'] .icon-dark {
+    display: block;
+  }
+
+  /* The little A marks the system (auto) state. */
+  .theme-toggle .auto {
     position: absolute;
-    left: 50%;
-    bottom: 0.1rem;
-    width: 1rem;
-    height: 3px;
-    margin-left: -0.5rem;
-    background-color: currentColor;
+    right: -0.1rem;
+    bottom: -0.1rem;
+    font-family: var(--sans);
+    font-size: 0.625rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.01em;
   }
 
   .skip-link {
@@ -393,7 +396,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .theme button {
+    .theme-toggle {
       transition: none;
     }
   }

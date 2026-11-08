@@ -71,7 +71,8 @@ Secrets required: `CLOUDFLARE_API_TOKEN` (Account → Cloudflare Pages → Edit)
   resolved inconsistently across elements and broke contrast.
 - Theme states are `system`, `light`, `dark`, stored in `localStorage` under `theme`.
   `system` means no `data-theme` attribute on `<html>`. The inline script in `Base.astro`
-  must keep running before first paint to avoid a flash.
+  must keep running before first paint to avoid a flash. One icon button cycles the three
+  states: sun with a small `A` for system, sun for light, crescent for dark.
 - Serif body, sans-serif only for small UI text. Measure stays under ~65 characters.
 - The name is the page's one large thing. Sections are separated by space, not by rules;
   section titles hang in a left column with their links in the right one. The quote is
