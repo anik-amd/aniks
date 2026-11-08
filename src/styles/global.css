@@ -266,19 +266,13 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    column-gap: 0.5rem;
-    row-gap: 0.35rem;
+    column-gap: 1.35rem;
+    row-gap: 0.55rem;
   }
 
   .links li {
     display: inline-flex;
     align-items: baseline;
-  }
-
-  .links li + li::before {
-    content: '~';
-    color: var(--muted);
-    margin-right: 0.5rem;
   }
 
   .quote::before {

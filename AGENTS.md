@@ -78,7 +78,8 @@ Secrets required: `CLOUDFLARE_API_TOKEN` (Account → Cloudflare Pages → Edit)
 - The name is the page's one large thing. Sections are separated by space, not by rules;
   section titles hang in a left column with their links in the right one. The quote is
   the page's only field of colour (`--panel`), opened by an accent quotation mark.
-- Links are separated by `~`. Underlines use the accent.
+- Links sit in a wrapped row with generous gaps and no separator glyph; underlines use
+  the accent.
 - Motion is limited to a 180ms colour and icon transition, disabled under
   `prefers-reduced-motion`.
 
