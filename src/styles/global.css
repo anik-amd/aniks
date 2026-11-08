@@ -455,14 +455,6 @@
     text-decoration: none;
   }
 
-  .footer-mark {
-    width: 1em;
-    height: 1em;
-    margin-right: 0.3em;
-    vertical-align: -0.15em;
-    color: var(--muted);
-  }
-
   .theme-toggle {
     display: inline-grid;
     place-items: center;
