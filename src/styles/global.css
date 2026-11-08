@@ -205,6 +205,9 @@
 
 @layer components {
   .name {
+    position: relative;
+    margin-left: -1.15rem;
+    padding-left: 1.15rem;
     font-size: clamp(2.4rem, 9vw, 4rem);
     font-weight: 600;
     line-height: 0.92;
@@ -212,13 +215,14 @@
     text-wrap: balance;
   }
 
-  /* A short accent bar sits over the name, like a printer's mark. */
+  /* A short accent rule stands at the name's left shoulder. */
   .name::before {
     content: '';
-    display: block;
-    width: 2.5rem;
-    height: 3px;
-    margin-bottom: 1.05rem;
+    position: absolute;
+    left: 0;
+    top: 0.05em;
+    width: 3px;
+    height: 0.8em;
     background-color: var(--accent);
   }
 
