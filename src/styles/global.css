@@ -160,12 +160,12 @@
 
   .identity {
     display: grid;
-    gap: clamp(1.15rem, 3vw, 1.6rem);
+    gap: clamp(1.5rem, 4vw, 2.1rem);
   }
 
   /* The greeting belongs with the paragraphs, not with the name. */
   .intro {
-    margin-top: clamp(0.75rem, 2vw, 1rem);
+    margin-top: clamp(1.1rem, 2.5vw, 1.4rem);
   }
 
   .intro p + p {
@@ -209,6 +209,16 @@
     line-height: 1.3;
     color: var(--muted);
     text-wrap: pretty;
+  }
+
+  /* The location mark sits inline, in the accent colour. */
+  .pin {
+    display: inline-block;
+    width: 0.9em;
+    height: 0.9em;
+    margin-right: 0.12em;
+    vertical-align: -0.08em;
+    color: var(--accent);
   }
 
   /* The opening initial grows upward from the baseline, not down into the next line. */
