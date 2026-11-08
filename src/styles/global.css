@@ -207,18 +207,15 @@
   .name {
     font-size: clamp(2.4rem, 9vw, 4rem);
     font-weight: 600;
-    line-height: 0.9;
+    line-height: 0.92;
     letter-spacing: -0.035em;
     text-wrap: balance;
   }
 
-  /* The name sets as two stacked lines, the family name stepped in. */
-  .name span {
-    display: block;
-  }
-
-  .name .name-alt {
-    margin-left: 0.62em;
+  /* One line, two weights: the family name steps back to light. */
+  .name-alt {
+    font-weight: 400;
+    letter-spacing: -0.03em;
   }
 
   .lead {
