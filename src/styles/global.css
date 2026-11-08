@@ -427,6 +427,8 @@
     font-size: 0.9375rem;
     letter-spacing: 0.01em;
     color: var(--muted);
+    /* Lining figures: the 6 sits on the baseline with the rest. */
+    font-variant-numeric: lining-nums;
   }
 
   .theme-toggle {
