@@ -239,6 +239,15 @@
     text-wrap: balance;
   }
 
+  /* The mark sits on the title's first line, in the accent colour. */
+  .section-icon {
+    width: 0.95em;
+    height: 0.95em;
+    margin-right: 0.4em;
+    vertical-align: -0.1em;
+    color: var(--accent);
+  }
+
   .section-lede {
     grid-column: 1;
     grid-row: 2;

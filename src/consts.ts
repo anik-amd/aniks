@@ -27,6 +27,8 @@ export type Link = {
 export type Section = {
   id: string;
   title: string;
+  /** Inline SVG markup for the mark shown before the title. */
+  icon: string;
   lede: string;
   links: Link[];
 };
@@ -35,6 +37,8 @@ export const SECTIONS: Section[] = [
   {
     id: 'research-code',
     title: 'Research & Code',
+    // Angle brackets.
+    icon: '<path d="M9 6 4 12l5 6M15 6l5 6-5 6" />',
     lede: 'Papers, repos & colabs.',
     links: [
       { label: 'GitHub', href: 'https://github.com/anik-amd/' },
@@ -45,6 +49,8 @@ export const SECTIONS: Section[] = [
   {
     id: 'contact',
     title: 'Get in Touch',
+    // Envelope.
+    icon: '<rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3.5 7 8.5 6 8.5-6" />',
     lede: 'Discuss a project idea or just drop a hi!',
     links: [
       { label: 'Mastodon', href: 'https://mastodon.social/@aniks' },
@@ -56,6 +62,8 @@ export const SECTIONS: Section[] = [
   {
     id: 'keeps-me-up',
     title: 'What Keeps Me Up at Night',
+    // Open book.
+    icon: '<path d="M12 6.5C10.5 5 8.5 4.4 6 4.4H3v13h3c2.5 0 4.5.6 6 2.1 1.5-1.5 3.5-2.1 6-2.1h3v-13h-3c-2.5 0-4.5.6-6 2.1Z" /><path d="M12 6.5v13" />',
     lede: 'Books, music, and films that linger.',
     links: [
       { label: 'Last.fm', href: 'https://www.last.fm/user/anik91' },
