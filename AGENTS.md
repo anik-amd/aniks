@@ -72,13 +72,14 @@ Secrets required: `CLOUDFLARE_API_TOKEN` (Account → Cloudflare Pages → Edit)
 - Theme states are `system`, `light`, `dark`, stored in `localStorage` under `theme`.
   `system` means no `data-theme` attribute on `<html>`. The inline script in `Base.astro`
   must keep running before first paint to avoid a flash. One icon button cycles the three
-  states: sun with a small `A` for system, sun for light, crescent for dark.
+  states: half-filled circle for system, sun for light, crescent for dark. The glyphs sit in
+  one grid cell and cross-fade.
 - Serif body, sans-serif only for small UI text. Measure stays under ~65 characters.
 - The name is the page's one large thing. Sections are separated by space, not by rules;
   section titles hang in a left column with their links in the right one. The quote is
   the page's only field of colour (`--panel`), opened by an accent quotation mark.
 - Links are separated by `~`. Underlines use the accent.
-- Motion is limited to a 120ms colour transition, disabled under
+- Motion is limited to a 180ms colour and icon transition, disabled under
   `prefers-reduced-motion`.
 
 ## SEO invariants

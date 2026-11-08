@@ -92,11 +92,13 @@
 @layer base {
   html {
     background-color: var(--bg);
+    transition: background-color 180ms ease;
   }
 
   body {
     background-color: var(--bg);
     color: var(--text);
+    transition: background-color 180ms ease, color 180ms ease;
     font-family: var(--serif);
     font-size: 1.0625rem;
     line-height: 1.62;
@@ -158,11 +160,12 @@
 
   .identity {
     display: grid;
-    gap: 0.55rem;
+    gap: clamp(1.15rem, 3vw, 1.6rem);
   }
 
+  /* The greeting belongs with the paragraphs, not with the name. */
   .intro {
-    margin-top: clamp(2rem, 5vw, 2.75rem);
+    margin-top: clamp(0.75rem, 2vw, 1rem);
   }
 
   .intro p + p {
@@ -183,6 +186,7 @@
     margin-inline: calc(var(--pad) * -1);
     padding: clamp(1.75rem, 5vw, 2.75rem) var(--pad) clamp(1.6rem, 4vw, 2.25rem);
     background-color: var(--panel);
+    transition: background-color 180ms ease;
   }
 
   .site-footer {
@@ -296,7 +300,6 @@
   }
 
   .theme-toggle {
-    position: relative;
     display: inline-grid;
     place-items: center;
     width: 2.5rem;
@@ -309,30 +312,20 @@
     color: var(--text);
   }
 
+  /* All three glyphs share one cell, so they can cross-fade in place. */
   .theme-toggle .icon {
-    display: none;
+    grid-area: 1 / 1;
+    opacity: 0;
+    transform: rotate(-40deg) scale(0.6);
+    transition: opacity 180ms ease, transform 180ms ease;
+    pointer-events: none;
   }
 
-  .theme-toggle[data-theme-state='system'] .icon-system {
-    display: inline-flex;
-    position: relative;
-  }
-
+  .theme-toggle[data-theme-state='system'] .icon-system,
   .theme-toggle[data-theme-state='light'] .icon-light,
   .theme-toggle[data-theme-state='dark'] .icon-dark {
-    display: block;
-  }
-
-  /* The little A marks the system (auto) state. */
-  .theme-toggle .auto {
-    position: absolute;
-    right: -0.2rem;
-    bottom: -0.15rem;
-    font-family: var(--sans);
-    font-size: 0.6875rem;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: 0.01em;
+    opacity: 1;
+    transform: none;
   }
 
   .skip-link {
@@ -395,8 +388,17 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .theme-toggle {
+    .theme-toggle,
+    .theme-toggle .icon,
+    .quote {
       transition: none;
     }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    transition: none;
   }
 }

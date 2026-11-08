@@ -2,6 +2,9 @@
 const sun =
   '<circle cx="12" cy="12" r="4.2" /><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.2 5.2l1.7 1.7M17.1 17.1l1.7 1.7M18.8 5.2l-1.7 1.7M6.9 17.1l-1.7 1.7" />';
 const moon = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />';
+// Half-filled circle: light on one side, dark on the other.
+const auto =
+  '<circle cx="12" cy="12" r="8" /><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor" stroke="none" />';
 ---
 
 <button
@@ -12,22 +15,20 @@ const moon = '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />';
   aria-label="Theme: system. Change to light."
   title="Theme: system. Change to light."
 >
-  <span class="icon icon-system">
-    <svg
-      viewBox="0 0 24 24"
-      width="20"
-      height="20"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.7"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-      focusable="false"
-      set:html={sun}
-    />
-    <span class="auto" aria-hidden="true">A</span>
-  </span>
+  <svg
+    class="icon icon-system"
+    viewBox="0 0 24 24"
+    width="20"
+    height="20"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.7"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+    focusable="false"
+    set:html={auto}
+  />
   <svg
     class="icon icon-light"
     viewBox="0 0 24 24"
