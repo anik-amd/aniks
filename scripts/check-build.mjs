@@ -28,7 +28,18 @@ for (const file of [
   if (!existsSync(path(file))) fail(`missing dist/${file}`);
 }
 
-// 2. Homepage contract
+// 2. Social card is a real PNG at the advertised size
+if (existsSync(path('og.png'))) {
+  const png = readFileSync(path('og.png'));
+  if (png.subarray(1, 4).toString() !== 'PNG') fail('og.png is not a PNG');
+  const width = png.readUInt32BE(16);
+  const height = png.readUInt32BE(20);
+  if (width !== 1200 || height !== 630) {
+    fail(`og.png is ${width}x${height}, expected 1200x630`);
+  }
+}
+
+// 3. Homepage contract
 if (existsSync(path('index.html'))) {
   const html = readFileSync(path('index.html'), 'utf8');
   const expect = (pattern, message) => {
@@ -47,6 +58,12 @@ if (existsSync(path('index.html'))) {
     'og:image missing or wrong',
   );
   expect(/<meta name="twitter:card" content="summary_large_image"/, 'twitter card missing');
+  expect(/<meta name="twitter:image:alt" content="[^"]{10,}"/, 'twitter image alt missing');
+  expect(/<meta property="og:type" content="profile"/, 'og:type is not profile');
+  expect(/<meta property="og:image:width" content="1200"/, 'og:image width missing');
+  expect(/<meta property="og:image:height" content="630"/, 'og:image height missing');
+  expect(/<meta property="og:image:type" content="image\/png"/, 'og:image type missing');
+  expect(/<meta property="profile:username" content="aniks"/, 'profile username missing');
   expect(/<meta name="viewport" content="width=device-width, initial-scale=1"/, 'viewport missing');
 
   // Exactly one h1
@@ -89,20 +106,20 @@ if (existsSync(path('index.html'))) {
   if (bytes > 60_000) fail(`index.html too large: ${bytes} bytes`);
 }
 
-// 3. 404 page must not be indexed and must link home
+// 4. 404 page must not be indexed and must link home
 if (existsSync(path('404.html'))) {
   const html = readFileSync(path('404.html'), 'utf8');
   if (!/<meta name="robots" content="noindex"/.test(html)) fail('404 page is indexable');
   if (!/href="\/"/.test(html)) fail('404 page has no link home');
 }
 
-// 4. robots.txt points at the sitemap
+// 5. robots.txt points at the sitemap
 if (existsSync(path('robots.txt'))) {
   const robots = readFileSync(path('robots.txt'), 'utf8');
   if (!robots.includes(`Sitemap: ${ORIGIN}/sitemap.xml`)) fail('robots.txt sitemap line missing');
 }
 
-// 5. No client JavaScript bundles
+// 6. No client JavaScript bundles
 const assetsDir = path('_astro');
 if (existsSync(assetsDir)) {
   const js = readdirSync(assetsDir).filter((file) => file.endsWith('.js'));

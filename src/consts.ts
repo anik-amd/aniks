@@ -7,6 +7,7 @@ export const SITE = {
   description:
     'Anik Ahmed is an MSc data science student at BUET in Dhaka, working on machine learning, open-source software, and decentralized systems.',
   locale: 'en',
+  ogLocale: 'en_GB',
   ogImage: '/og.png',
   repo: 'https://github.com/anik-amd/aniks',
   license: 'https://github.com/anik-amd/aniks/blob/main/LICENSE',
