@@ -108,13 +108,11 @@ const structuredData = {
         <ul class="links">
           {section.links.map((link) => {
             const external = link.href.startsWith('http');
+            // Mastodon verifies the profile through an exact rel="me" link.
+            const rel = link.icon === 'mastodon' ? 'me' : external ? 'me noopener noreferrer' : 'me';
             return (
               <li>
-                <a
-                  href={link.href}
-                  rel={external ? 'me noopener noreferrer' : 'me'}
-                  target={external ? '_blank' : undefined}
-                >
+                <a href={link.href} rel={rel} target={external ? '_blank' : undefined}>
                   <svg
                     class="link-icon"
                     viewBox="0 0 24 24"
