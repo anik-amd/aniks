@@ -9,10 +9,11 @@ Markdown blog and project pages are planned.
 
 ## Constraints
 
-- **Zero client JS by default.** The only script allowed is the inline theme switcher.
-  Anything else needs a reason.
-- **No web fonts, no analytics SDKs, no images.** Typography is the system serif stack.
-  The single raster asset is `public/og.png`.
+- **Zero client JS in the source.** The only script the repo ships is the inline theme
+  switcher. Anything else needs a reason. The host may append a cookieless analytics
+  beacon at the edge; that is configured outside the repo and never vendored here.
+- **No web fonts, no analytics libraries, no images.** Typography is the system serif
+  stack. The single raster asset is `public/og.png`.
 
 ## Stack
 
