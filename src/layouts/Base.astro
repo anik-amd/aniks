@@ -37,6 +37,20 @@ const fullTitle = title === SITE.title ? `${SITE.name} — data science, open so
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
+    <link
+      rel="preload"
+      href="/fonts/ibm-plex-sans-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/fraunces-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link rel="sitemap" href="/sitemap.xml" />
     <meta name="author" content={SITE.name} />
     {noindex && <meta name="robots" content="noindex" />}

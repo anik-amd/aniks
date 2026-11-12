@@ -1,3 +1,49 @@
+/* Fraunces for display, IBM Plex Sans for text. Self-hosted, subset to Latin.
+   Licences: public/fonts/OFL-Fraunces.txt and OFL-IBM-Plex.txt. */
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-sans-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-sans-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+/* The display face: the name, the quote, the 404. */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/fraunces-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/fraunces-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
 @layer reset, base, layout, components, motion;
 
 :root {
@@ -11,9 +57,9 @@
   --accent: #2c6b4f;
   --selection: #d6e7dc;
 
-  --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia,
-    ui-serif, serif;
-  --sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    sans-serif;
+  --display: 'Fraunces', 'Iowan Old Style', Palatino, Georgia, ui-serif, serif;
 
   /* Page frame. The content column is --page-max minus twice --pad. */
   --page-max: 40rem;
@@ -99,11 +145,11 @@
     background-color: var(--bg);
     color: var(--text);
     transition: background-color 320ms ease, color 320ms ease;
-    font-family: var(--serif);
-    font-size: 1.0625rem;
-    line-height: 1.62;
+    font-family: var(--font);
+    font-size: 1.125rem;
+    line-height: 1.6;
     font-kerning: normal;
-    font-variant-numeric: oldstyle-nums;
+    font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     min-height: 100dvh;
@@ -199,6 +245,13 @@
     margin-top: clamp(3.25rem, 8vw, 4.5rem);
   }
 
+  /* The featured grid runs the full width, under its hanging title. */
+  .featured .cards {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-top: 1.35rem;
+  }
+
   /* The quote breaks the column and becomes the page's one field of colour. */
   .quote {
     margin-top: clamp(4rem, 10vw, 6rem);
@@ -215,10 +268,11 @@
 
 @layer components {
   .name {
-    font-size: clamp(2.4rem, 9vw, 4rem);
-    font-weight: 600;
-    line-height: 0.92;
-    letter-spacing: -0.035em;
+    font-family: var(--display);
+    font-size: clamp(2.5rem, 9vw, 4.25rem);
+    font-weight: 500;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
     text-wrap: balance;
   }
 
@@ -405,27 +459,130 @@
     color: var(--accent);
   }
 
+  /* Featured works: one card per work, the whole card is the link. */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: 1rem;
+    list-style: none;
+  }
+
+  .card {
+    position: relative;
+    padding: 1.05rem 1.2rem 1.1rem;
+    border: 1px solid var(--rule);
+    transition: border-color 200ms ease, background-color 320ms ease;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+  }
+
+  /* One ring on focus, not a ring inside a ring. */
+  .card:focus-within {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .card-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .card-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .card-tag {
+    font-family: var(--font);
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+  }
+
+  .card-arrow {
+    width: 0.85rem;
+    height: 0.85rem;
+    flex: none;
+    color: var(--muted);
+    transition: color 200ms ease, transform 200ms ease;
+  }
+
+  .card:hover .card-arrow,
+  .card:focus-within .card-arrow {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+  }
+
+  .card-title {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.38;
+    letter-spacing: -0.008em;
+    text-wrap: pretty;
+  }
+
+  .card:hover .card-title,
+  .card:focus-within .card-title {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.2em;
+  }
+
+  .card-note {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  .card-meta {
+    display: block;
+    margin-top: 0.85rem;
+    font-family: var(--font);
+    font-size: 0.8125rem;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+  }
+
   .quote::before {
     content: '\201C';
     display: block;
-    font-size: clamp(4rem, 10vw, 6rem);
-    font-weight: 700;
-    line-height: 0.62;
+    font-family: var(--display);
+    font-size: clamp(3rem, 8vw, 4.5rem);
+    font-weight: 500;
+    line-height: 0.7;
     color: var(--accent);
-    margin-bottom: 0.45em;
+    margin-bottom: 0.4em;
   }
 
   .quote-text {
-    font-size: clamp(1.5rem, 4vw, 1.75rem);
-    font-weight: 700;
-    line-height: 1.32;
-    letter-spacing: -0.015em;
+    font-family: var(--display);
+    font-size: clamp(1.6rem, 4.2vw, 1.95rem);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
     text-wrap: pretty;
   }
 
   .quote-author {
     margin-top: 1.1rem;
-    font-family: var(--sans);
+    font-family: var(--font);
     font-size: 0.875rem;
     letter-spacing: 0.01em;
     color: var(--muted);
@@ -442,7 +599,7 @@
     align-items: baseline;
     justify-content: space-between;
     gap: 0.35rem 1.25rem;
-    font-family: var(--sans);
+    font-family: var(--font);
     font-size: 0.875rem;
     letter-spacing: 0.01em;
     color: var(--muted);
@@ -499,7 +656,7 @@
     padding: 0.6rem 0.9rem;
     background-color: var(--bg);
     color: var(--text);
-    font-family: var(--sans);
+    font-family: var(--font);
     font-size: 0.9rem;
     border: 1px solid var(--rule);
   }
@@ -545,6 +702,11 @@
       grid-row: auto;
     }
 
+    .featured .cards {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
     .links {
       margin-top: 0.7rem;
     }
@@ -553,6 +715,8 @@
   @media (prefers-reduced-motion: reduce) {
     .theme-toggle,
     .theme-toggle .icon,
+    .card,
+    .card-arrow,
     .quote {
       transition: none;
     }
@@ -604,12 +768,16 @@
     animation-delay: 310ms;
   }
 
+  .section:nth-of-type(4) {
+    animation-delay: 360ms;
+  }
+
   .quote {
-    animation-delay: 370ms;
+    animation-delay: 410ms;
   }
 
   .site-footer {
-    animation-delay: 420ms;
+    animation-delay: 460ms;
   }
 
   @media (prefers-reduced-motion: reduce) {

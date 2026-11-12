@@ -24,6 +24,12 @@ for (const file of [
   'og.png',
   'favicon.svg',
   '_headers',
+  'fonts/ibm-plex-sans-latin.woff2',
+  'fonts/ibm-plex-sans-italic-latin.woff2',
+  'fonts/fraunces-latin.woff2',
+  'fonts/fraunces-italic-latin.woff2',
+  'fonts/OFL-Fraunces.txt',
+  'fonts/OFL-IBM-Plex.txt',
 ]) {
   if (!existsSync(path(file))) fail(`missing dist/${file}`);
 }
@@ -65,6 +71,14 @@ if (existsSync(path('index.html'))) {
   expect(/<meta property="og:image:type" content="image\/png"/, 'og:image type missing');
   expect(/<meta property="profile:username" content="aniks"/, 'profile username missing');
   expect(/<meta name="viewport" content="width=device-width, initial-scale=1"/, 'viewport missing');
+  expect(
+    /<link rel="preload" href="\/fonts\/ibm-plex-sans-latin\.woff2"/,
+    'font preload missing',
+  );
+  expect(
+    /<link rel="preload" href="\/fonts\/fraunces-latin\.woff2"/,
+    'display font preload missing',
+  );
 
   // Exactly one h1
   const h1Count = (html.match(/<h1[\s>]/g) ?? []).length;
@@ -129,6 +143,18 @@ if (existsSync(assetsDir)) {
     0,
   );
   if (budget > 60_000) fail(`dist/_astro budget exceeded: ${budget} bytes`);
+
+  // Both faces must be declared locally, never linked from a font CDN.
+  const css = readdirSync(assetsDir)
+    .filter((file) => file.endsWith('.css'))
+    .map((file) => readFileSync(join(assetsDir, file), 'utf8'))
+    .join('\n');
+  for (const family of ['IBM Plex Sans', 'Fraunces']) {
+    if (!new RegExp(`font-family:\\s*['"]?${family}['"]?`).test(css)) {
+      fail(`${family} @font-face missing from the built CSS`);
+    }
+  }
+  if (/fonts\.(?:googleapis|gstatic)\.com/.test(css)) fail('font CDN reference in the CSS');
 }
 
 if (errors.length > 0) {

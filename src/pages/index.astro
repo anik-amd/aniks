@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { PERSON, QUOTE, SAME_AS, SECTIONS, SITE } from '../consts';
+import { FEATURED, PERSON, QUOTE, SAME_AS, SECTIONS, SITE } from '../consts';
 import { LINK_ICONS } from '../link-icons';
 
 const nameChars = [...PERSON.name];
@@ -85,6 +85,53 @@ const structuredData = {
       never finish.
     </p>
   </div>
+
+  <section class="section featured" aria-labelledby="featured-title">
+    <h2 class="section-title" id="featured-title">
+      <svg
+        class="section-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.7"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+        set:html={'<path d="M6 3h12v18l-6-4.6L6 21Z" />'}
+      />
+      <span>Featured</span>
+    </h2>
+    <p class="section-lede">Works that I'm proud of.</p>
+    <ul class="cards">
+      {FEATURED.map((item) => (
+        <li class="card">
+          <a class="card-link" href={item.href} target="_blank" rel="noopener noreferrer">
+            <span class="card-head">
+              <span class="card-tag">#{item.tag}</span>
+              <svg
+                class="card-arrow"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M7 17 17 7" />
+                <path d="M9 7h8v8" />
+              </svg>
+            </span>
+            <span class="card-title">{item.title}</span>
+            <span class="card-note">{item.note}</span>
+            <span class="card-meta">{item.meta}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
 
   {
     SECTIONS.map((section) => (
