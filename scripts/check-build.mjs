@@ -24,6 +24,9 @@ for (const file of [
   'og.png',
   'favicon.svg',
   '_headers',
+  'fonts/instrument-sans-latin.woff2',
+  'fonts/instrument-sans-italic-latin.woff2',
+  'fonts/OFL.txt',
 ]) {
   if (!existsSync(path(file))) fail(`missing dist/${file}`);
 }
@@ -65,6 +68,10 @@ if (existsSync(path('index.html'))) {
   expect(/<meta property="og:image:type" content="image\/png"/, 'og:image type missing');
   expect(/<meta property="profile:username" content="aniks"/, 'profile username missing');
   expect(/<meta name="viewport" content="width=device-width, initial-scale=1"/, 'viewport missing');
+  expect(
+    /<link rel="preload" href="\/fonts\/instrument-sans-latin\.woff2"/,
+    'font preload missing',
+  );
 
   // Exactly one h1
   const h1Count = (html.match(/<h1[\s>]/g) ?? []).length;
@@ -129,6 +136,15 @@ if (existsSync(assetsDir)) {
     0,
   );
   if (budget > 60_000) fail(`dist/_astro budget exceeded: ${budget} bytes`);
+
+  // The face must be declared locally, never linked from a font CDN.
+  const css = readdirSync(assetsDir)
+    .filter((file) => file.endsWith('.css'))
+    .map((file) => readFileSync(join(assetsDir, file), 'utf8'))
+    .join('\n');
+  const localFace = /font-family:\s*['"]Instrument Sans['"]/;
+  if (!localFace.test(css)) fail('Instrument Sans @font-face missing from the built CSS');
+  if (/fonts\.(?:googleapis|gstatic)\.com/.test(css)) fail('font CDN reference in the CSS');
 }
 
 if (errors.length > 0) {
