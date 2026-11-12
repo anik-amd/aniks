@@ -26,6 +26,8 @@ for (const file of [
   '_headers',
   'fonts/instrument-sans-latin.woff2',
   'fonts/instrument-sans-italic-latin.woff2',
+  'fonts/instrument-serif-latin.woff2',
+  'fonts/instrument-serif-italic-latin.woff2',
   'fonts/OFL.txt',
 ]) {
   if (!existsSync(path(file))) fail(`missing dist/${file}`);
@@ -71,6 +73,10 @@ if (existsSync(path('index.html'))) {
   expect(
     /<link rel="preload" href="\/fonts\/instrument-sans-latin\.woff2"/,
     'font preload missing',
+  );
+  expect(
+    /<link rel="preload" href="\/fonts\/instrument-serif-latin\.woff2"/,
+    'display font preload missing',
   );
 
   // Exactly one h1
@@ -137,13 +143,16 @@ if (existsSync(assetsDir)) {
   );
   if (budget > 60_000) fail(`dist/_astro budget exceeded: ${budget} bytes`);
 
-  // The face must be declared locally, never linked from a font CDN.
+  // Both faces must be declared locally, never linked from a font CDN.
   const css = readdirSync(assetsDir)
     .filter((file) => file.endsWith('.css'))
     .map((file) => readFileSync(join(assetsDir, file), 'utf8'))
     .join('\n');
-  const localFace = /font-family:\s*['"]?Instrument Sans['"]?/;
-  if (!localFace.test(css)) fail('Instrument Sans @font-face missing from the built CSS');
+  for (const family of ['Instrument Sans', 'Instrument Serif']) {
+    if (!new RegExp(`font-family:\\s*['"]?${family}['"]?`).test(css)) {
+      fail(`${family} @font-face missing from the built CSS`);
+    }
+  }
   if (/fonts\.(?:googleapis|gstatic)\.com/.test(css)) fail('font CDN reference in the CSS');
 }
 

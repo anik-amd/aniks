@@ -12,9 +12,10 @@ Markdown blog and project pages are planned.
 - **Zero client JS in the source.** The only script the repo ships is the inline theme
   switcher. Anything else needs a reason. The host may append a cookieless analytics
   beacon at the edge; that is configured outside the repo and never vendored here.
-- **One self-hosted font, no analytics libraries, no images.** Instrument Sans, subset to
-  Latin, lives in `public/fonts/` with its OFL licence. Nothing is fetched from a font CDN
-  and no other family is added. The single raster asset is `public/og.png`.
+- **Two self-hosted fonts, no analytics libraries, no images.** Instrument Serif for the
+  name and the quote, Instrument Sans for everything else. Both are subset to Latin and
+  live in `public/fonts/` with their OFL licence. Nothing is fetched from a font CDN and
+  no third family is added. The single raster asset is `public/og.png`.
 
 ## Stack
 
@@ -60,8 +61,9 @@ the pull request is merged and the same build ships. Never ship unreviewed work.
   must keep running before first paint to avoid a flash. One icon button cycles the three
   states: half-filled circle for system, sun for light, crescent for dark. The glyphs sit in
   one grid cell and cross-fade.
-- One family throughout (`--font`), weight and size carry the hierarchy. Measure stays
-  under ~65 characters.
+- Two families, no more: `--display` (Instrument Serif) carries the name, the quote and
+  the 404; `--font` (Instrument Sans) carries body copy, headings and UI. Weight and size
+  do the rest. Measure stays under ~65 characters.
 - The name is the page's one large thing. Sections are separated by space, not by rules;
   section titles hang in a left column with their links in the right one. The quote is
   the page's only field of colour (`--panel`), opened by an accent quotation mark.
