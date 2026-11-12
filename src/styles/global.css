@@ -427,14 +427,14 @@
     transition: border-color 200ms ease, background-color 320ms ease;
   }
 
-  .card:hover,
-  .card:focus-within {
+  .card:hover {
     border-color: var(--accent);
   }
 
+  /* One ring on focus, not a ring inside a ring. */
   .card:focus-within {
     outline: 2px solid var(--accent);
-    outline-offset: 3px;
+    outline-offset: 2px;
   }
 
   .card-link {
