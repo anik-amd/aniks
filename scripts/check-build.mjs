@@ -142,7 +142,7 @@ if (existsSync(assetsDir)) {
     .filter((file) => file.endsWith('.css'))
     .map((file) => readFileSync(join(assetsDir, file), 'utf8'))
     .join('\n');
-  const localFace = /font-family:\s*['"]Instrument Sans['"]/;
+  const localFace = /font-family:\s*['"]?Instrument Sans['"]?/;
   if (!localFace.test(css)) fail('Instrument Sans @font-face missing from the built CSS');
   if (/fonts\.(?:googleapis|gstatic)\.com/.test(css)) fail('font CDN reference in the CSS');
 }
