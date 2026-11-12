@@ -122,7 +122,7 @@
     color: var(--text);
     transition: background-color 320ms ease, color 320ms ease;
     font-family: var(--font);
-    font-size: 1.0625rem;
+    font-size: 1.125rem;
     line-height: 1.6;
     font-kerning: normal;
     font-synthesis: none;
