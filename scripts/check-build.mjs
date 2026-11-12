@@ -24,10 +24,12 @@ for (const file of [
   'og.png',
   'favicon.svg',
   '_headers',
-  'fonts/instrument-sans-latin.woff2',
-  'fonts/instrument-sans-italic-latin.woff2',
-  'fonts/instrument-serif-latin.woff2',
-  'fonts/OFL.txt',
+  'fonts/ibm-plex-sans-latin.woff2',
+  'fonts/ibm-plex-sans-italic-latin.woff2',
+  'fonts/fraunces-latin.woff2',
+  'fonts/fraunces-italic-latin.woff2',
+  'fonts/OFL-Fraunces.txt',
+  'fonts/OFL-IBM-Plex.txt',
 ]) {
   if (!existsSync(path(file))) fail(`missing dist/${file}`);
 }
@@ -70,11 +72,11 @@ if (existsSync(path('index.html'))) {
   expect(/<meta property="profile:username" content="aniks"/, 'profile username missing');
   expect(/<meta name="viewport" content="width=device-width, initial-scale=1"/, 'viewport missing');
   expect(
-    /<link rel="preload" href="\/fonts\/instrument-sans-latin\.woff2"/,
+    /<link rel="preload" href="\/fonts\/ibm-plex-sans-latin\.woff2"/,
     'font preload missing',
   );
   expect(
-    /<link rel="preload" href="\/fonts\/instrument-serif-latin\.woff2"/,
+    /<link rel="preload" href="\/fonts\/fraunces-latin\.woff2"/,
     'display font preload missing',
   );
 
@@ -147,7 +149,7 @@ if (existsSync(assetsDir)) {
     .filter((file) => file.endsWith('.css'))
     .map((file) => readFileSync(join(assetsDir, file), 'utf8'))
     .join('\n');
-  for (const family of ['Instrument Sans', 'Instrument Serif']) {
+  for (const family of ['IBM Plex Sans', 'Fraunces']) {
     if (!new RegExp(`font-family:\\s*['"]?${family}['"]?`).test(css)) {
       fail(`${family} @font-face missing from the built CSS`);
     }
