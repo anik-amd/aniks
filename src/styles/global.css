@@ -282,21 +282,19 @@
     padding-left: 1.3rem;
   }
 
-  /* Each letter waits for the rule to pass, then settles in. */
+  /* Each letter waits for the rule to pass, then settles in. Transform only: the
+     name is painted from the first frame, so it never blocks first contentful paint. */
   .letter {
     display: inline-block;
-    opacity: 0;
     animation: letter-in 200ms ease-out forwards;
     animation-delay: calc(0.36s + var(--i, 0) * 0.113s);
   }
 
   @keyframes letter-in {
     from {
-      opacity: 0;
       transform: translateY(0.1em);
     }
     to {
-      opacity: 1;
       transform: none;
     }
   }
@@ -736,53 +734,38 @@
     }
   }
 
-  .identity,
-  .intro p,
+  /* The first screen paints as it is; only what sits below it settles in. */
   .section,
   .quote,
   .site-footer {
     animation: rise 520ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
   }
 
-  .intro p:nth-child(1) {
-    animation-delay: 60ms;
-  }
-
-  .intro p:nth-child(2) {
-    animation-delay: 110ms;
-  }
-
-  .intro p:nth-child(3) {
-    animation-delay: 160ms;
-  }
-
   .section:nth-of-type(1) {
-    animation-delay: 210ms;
+    animation-delay: 120ms;
   }
 
   .section:nth-of-type(2) {
-    animation-delay: 260ms;
+    animation-delay: 170ms;
   }
 
   .section:nth-of-type(3) {
-    animation-delay: 310ms;
+    animation-delay: 220ms;
   }
 
   .section:nth-of-type(4) {
-    animation-delay: 360ms;
+    animation-delay: 270ms;
   }
 
   .quote {
-    animation-delay: 410ms;
+    animation-delay: 320ms;
   }
 
   .site-footer {
-    animation-delay: 460ms;
+    animation-delay: 370ms;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .identity,
-    .intro p,
     .section,
     .quote,
     .site-footer {
@@ -794,7 +777,6 @@
     }
 
     .letter {
-      opacity: 1;
       animation: none;
     }
   }
