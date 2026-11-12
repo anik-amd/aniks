@@ -458,7 +458,7 @@
 
   .card-tag {
     font-family: var(--sans);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     letter-spacing: 0.02em;
     color: var(--accent);
   }
@@ -508,7 +508,7 @@
     display: block;
     margin-top: 0.85rem;
     font-family: var(--sans);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     letter-spacing: 0.01em;
     color: var(--muted);
   }
