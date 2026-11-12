@@ -27,7 +27,6 @@ for (const file of [
   'fonts/instrument-sans-latin.woff2',
   'fonts/instrument-sans-italic-latin.woff2',
   'fonts/instrument-serif-latin.woff2',
-  'fonts/instrument-serif-italic-latin.woff2',
   'fonts/OFL.txt',
 ]) {
   if (!existsSync(path(file))) fail(`missing dist/${file}`);
