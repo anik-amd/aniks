@@ -90,6 +90,28 @@ export const SAME_AS = SECTIONS.flatMap((section) =>
   section.links.filter((link) => link.href.startsWith('http')).map((link) => link.href),
 );
 
+export type Feature = {
+  /** Short kind label, rendered as #tag. */
+  tag: string;
+  title: string;
+  /** One or two sentences on what the work is. */
+  note: string;
+  /** Venue and year, or the project's one-line context. */
+  meta: string;
+  href: string;
+};
+
+export const FEATURED: Feature[] = [
+  {
+    tag: 'paper',
+    title:
+      'Advances in 3D and 4D printing technologies for smart wearable systems: A bibliometric and systematic analysis',
+    note: 'Maps the field of 3D and 4D printing for wearables — publication trends, research clusters, and the gaps still open.',
+    meta: 'Materials Today Communications · 2026',
+    href: 'https://doi.org/10.1016/j.mtcomm.2026.116563',
+  },
+];
+
 export const QUOTE = {
   text: 'The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion.',
   author: 'Albert Camus',

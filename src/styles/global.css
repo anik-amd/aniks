@@ -199,6 +199,13 @@
     margin-top: clamp(3.25rem, 8vw, 4.5rem);
   }
 
+  /* The featured grid runs the full width, under its hanging title. */
+  .featured .cards {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-top: 1.35rem;
+  }
+
   /* The quote breaks the column and becomes the page's one field of colour. */
   .quote {
     margin-top: clamp(4rem, 10vw, 6rem);
@@ -405,6 +412,107 @@
     color: var(--accent);
   }
 
+  /* Featured works: one card per work, the whole card is the link. */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: 1rem;
+    list-style: none;
+  }
+
+  .card {
+    position: relative;
+    padding: 1.05rem 1.2rem 1.1rem;
+    border: 1px solid var(--rule);
+    transition: border-color 200ms ease, background-color 320ms ease;
+  }
+
+  .card:hover,
+  .card:focus-within {
+    border-color: var(--accent);
+  }
+
+  .card:focus-within {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .card-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .card-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .card-tag {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+  }
+
+  .card-arrow {
+    width: 0.85rem;
+    height: 0.85rem;
+    flex: none;
+    color: var(--muted);
+    transition: color 200ms ease, transform 200ms ease;
+  }
+
+  .card:hover .card-arrow,
+  .card:focus-within .card-arrow {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+  }
+
+  .card-title {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.38;
+    letter-spacing: -0.008em;
+    text-wrap: pretty;
+  }
+
+  .card:hover .card-title,
+  .card:focus-within .card-title {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.2em;
+  }
+
+  .card-note {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  .card-meta {
+    display: block;
+    margin-top: 0.85rem;
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+  }
+
   .quote::before {
     content: '\201C';
     display: block;
@@ -545,6 +653,11 @@
       grid-row: auto;
     }
 
+    .featured .cards {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
     .links {
       margin-top: 0.7rem;
     }
@@ -553,6 +666,8 @@
   @media (prefers-reduced-motion: reduce) {
     .theme-toggle,
     .theme-toggle .icon,
+    .card,
+    .card-arrow,
     .quote {
       transition: none;
     }
@@ -604,12 +719,16 @@
     animation-delay: 310ms;
   }
 
+  .section:nth-of-type(4) {
+    animation-delay: 360ms;
+  }
+
   .quote {
-    animation-delay: 370ms;
+    animation-delay: 410ms;
   }
 
   .site-footer {
-    animation-delay: 420ms;
+    animation-delay: 460ms;
   }
 
   @media (prefers-reduced-motion: reduce) {
