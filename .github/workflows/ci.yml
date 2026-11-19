@@ -57,6 +57,10 @@ jobs:
       - name: Test build output
         run: npm test
 
+      # The page ships with a Pages Function; fail here, not at deploy time.
+      - name: Build the edge function
+        run: npx --yes wrangler@4 pages functions build functions --outdir .functions-build --compatibility-date=2026-11-01
+
       - name: Upload dist
         uses: actions/upload-artifact@v4
         with:
@@ -92,6 +96,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
+      - uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         with:
           name: dist
@@ -117,6 +123,7 @@ jobs:
           npx --yes wrangler@4 pages deploy dist \
             --project-name=aniks \
             --branch="$branch" \
+            --compatibility-date=2026-11-01 \
             --commit-dirty=true | tee deploy.log
           url=$(grep -Eo 'https://[a-z0-9]+\.aniks\.pages\.dev' deploy.log | head -n1)
           alias_url="https://$(echo "$branch" | tr '/' '-' | tr '[:upper:]' '[:lower:]').aniks.pages.dev"
@@ -136,6 +143,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
+      - uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         with:
           name: dist
@@ -149,6 +158,7 @@ jobs:
           npx --yes wrangler@4 pages deploy dist \
             --project-name=aniks \
             --branch=main \
+            --compatibility-date=2026-11-01 \
             --commit-dirty=true
 
       - name: Smoke test production
@@ -159,13 +169,15 @@ jobs:
           body=""
           for attempt in $(seq 1 12); do
             body=$(curl -fsS "$url" || true)
-            if echo "$body" | grep -q 'data-theme-cycle'; then
+            if echo "$body" | grep -q 'data-theme-cycle' && echo "$body" | grep -q 'now:edge'; then
               echo "production serves the new build (attempt ${attempt})"
               break
             fi
             sleep 5
           done
           echo "$body" | grep -q 'data-theme-cycle' || { echo "production still serves an old build"; exit 1; }
+          # now:edge is written by functions/index.ts, so this proves the edge ran.
+          echo "$body" | grep -q 'now:edge' || { echo "the Now function did not run"; exit 1; }
           code=$(curl -s -o /dev/null -w "%{http_code}" "https://aniks.pages.dev/not-a-real-page?smoke=${GITHUB_RUN_ID}")
           [ "$code" = "404" ] || { echo "unknown path returned ${code}, expected 404"; exit 1; }
           echo "production looks alive"
