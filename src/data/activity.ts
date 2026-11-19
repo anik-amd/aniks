@@ -10,8 +10,6 @@ import raw from './activity.json';
 export type Music = {
   artist: string;
   track: string;
-  /** Last.fm page for the track. */
-  url: string;
   /** ISO timestamp of the scrobble, or null when it cannot be known. */
   playedAt: string | null;
   /** Self-hosted album art, or null when the track has none. */
@@ -68,14 +66,12 @@ const readMusic = (value: unknown): Music | null => {
   const source = value as Record<string, unknown>;
 
   const track = text(source.track, MAX_TITLE);
-  const url = link(source.url, 'last.fm');
-  if (!track || !url) return null;
+  if (!track) return null;
 
   const playedAt = isoDate(source.playedAt);
   return {
     artist: text(source.artist, MAX_ARTIST),
     track,
-    url,
     playedAt,
     art: cover(source.art),
   };

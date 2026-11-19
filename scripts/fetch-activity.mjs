@@ -167,7 +167,6 @@ const readMusic = async (apiKey) => {
   return {
     artist: clean(String(artist)),
     track: clean(String(track.name)),
-    url: typeof track.url === 'string' ? track.url : `https://www.last.fm/user/${LASTFM_USER}`,
     playedAt: Number.isFinite(played) && played > 0 ? new Date(played * 1000).toISOString() : null,
     image: artwork ?? '',
   };

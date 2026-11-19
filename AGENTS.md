@@ -93,8 +93,8 @@ the pull request is merged and the same build ships. Never ship unreviewed work.
 - Now is one unlabelled row: a rounded player chip with album art, the last track, its
   artist and when it last played, then the shelf of covers, then a single "See more" link
   to Goodreads. No "Now", "Listening" or "Reading" text; the chip's round art and play
-  glyph, and the covers, are the labels. The whole chip and its glyph link to the track's
-  Last.fm page. Covers have no frame — a small radius and a shadow make them read as
+  glyph, and the covers, are the labels. The whole chip and its glyph open the Last.fm
+  profile. Covers have no frame — a small radius and a shadow make them read as
   objects, and they lift on hover. Covers are the only images besides `og.png`, and the
   quote stays the page's only full-bleed panel.
 - Links sit in a wrapped row with generous gaps and no separator glyph; underlines use
