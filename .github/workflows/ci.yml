@@ -33,8 +33,10 @@ jobs:
           node-version: '22'
 
       # Last.fm and Goodreads are read here, once a week, never during a build.
+      # A manual dispatch refreshes too, which is how a branch preview can show
+      # live data without committing anything.
       - name: Refresh the Now snapshot
-        if: github.event_name == 'schedule'
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         env:
           LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
         run: node scripts/fetch-activity.mjs
