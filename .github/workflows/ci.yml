@@ -23,6 +23,21 @@ permissions:
   contents: read
 
 jobs:
+  inspect:
+    name: Inspect Pages env
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: List env names per environment
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          curl -fsS "https://api.cloudflare.com/client/v4/accounts/${ACCOUNT}/pages/projects/aniks" \
+            -H "Authorization: Bearer ${TOKEN}" \
+            | jq -r '.result.deployment_configs | to_entries[] | "\(.key): \(.value.env_vars | to_entries | map("\(.key)=\(.value.type)") | join(", "))"'
+
   build:
     name: Build and test
     runs-on: ubuntu-latest
