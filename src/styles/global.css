@@ -115,6 +115,8 @@
 
   html {
     -webkit-text-size-adjust: 100%;
+    /* No grey/green flash over a whole card when a phone taps a link. */
+    -webkit-tap-highlight-color: transparent;
   }
 
   body,
@@ -735,14 +737,15 @@
     transition: border-color 200ms ease, background-color 320ms ease;
   }
 
-  .card:hover {
-    border-color: var(--accent);
-  }
-
   /* One ring on focus, not a ring inside a ring. */
   .card:focus-within {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
+  }
+
+  /* Touch has no hover, so a press gets its own acknowledgement. */
+  .card:active {
+    border-color: var(--accent);
   }
 
   .card-link {
@@ -779,7 +782,6 @@
     transition: color 200ms ease, transform 200ms ease;
   }
 
-  .card:hover .card-arrow,
   .card:focus-within .card-arrow {
     color: var(--accent);
     transform: translate(2px, -2px);
@@ -795,12 +797,30 @@
     text-wrap: pretty;
   }
 
-  .card:hover .card-title,
   .card:focus-within .card-title {
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-decoration-color: var(--accent);
     text-underline-offset: 0.2em;
+  }
+
+  /* Hover only where a real pointer exists; on touch it would stick after a tap. */
+  @media (hover: hover) {
+    .card:hover {
+      border-color: var(--accent);
+    }
+
+    .card:hover .card-arrow {
+      color: var(--accent);
+      transform: translate(2px, -2px);
+    }
+
+    .card:hover .card-title {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-decoration-color: var(--accent);
+      text-underline-offset: 0.2em;
+    }
   }
 
   .card-note {
