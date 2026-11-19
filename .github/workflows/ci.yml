@@ -122,7 +122,9 @@ jobs:
 
   deploy:
     name: Production deploy
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'schedule'
+    # A manual dispatch on main is how the snapshot gets refreshed on demand:
+    # same path as the weekly run, without waiting for Monday.
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 8

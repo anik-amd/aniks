@@ -485,7 +485,7 @@
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
     column-gap: 0.7rem;
-    min-height: 7rem;
+    min-height: 7.5rem;
     padding: 0.7rem 0.85rem;
     background-color: var(--panel);
     border-radius: 12px;
@@ -638,8 +638,8 @@
   /* No frame, no letterbox: the cover fills its slot like a book on a shelf. */
   .now-cover {
     display: block;
-    width: 4.5rem;
-    height: 7rem;
+    width: 5rem;
+    height: 7.5rem;
     border-radius: 3px;
     object-fit: cover;
     box-shadow: var(--cover-shadow);
