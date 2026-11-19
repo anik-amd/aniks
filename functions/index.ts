@@ -144,20 +144,24 @@ export const onRequest = async ({ request, env, next }: Context): Promise<Respon
 
   let html = await response.text();
   let live = false;
+  let reason = 'no-key';
 
   if (env.LASTFM_API_KEY) {
     try {
       const fragment = await musicFragment(env.LASTFM_API_KEY, url);
       if (fragment) {
+        reason = 'no-track';
         const patched = html.replace(
           /<!--now:music-->[\s\S]*?<!--\/now:music-->/,
           `<!--now:music-->${fragment}<!--/now:music-->`,
         );
         live = patched !== html;
+        reason = live ? 'live' : 'no-block';
         html = patched;
       }
     } catch {
       // A broken edge call must never take the page down: keep the snapshot.
+      reason = 'error';
     }
   }
 
@@ -170,6 +174,7 @@ export const onRequest = async ({ request, env, next }: Context): Promise<Respon
   headers.delete('etag');
   headers.set('cache-control', 'public, max-age=0, must-revalidate');
   headers.set('x-now', live ? 'live' : 'static');
+  headers.set('x-now-reason', reason);
 
   return new Response(html, { status: response.status, headers });
 };
