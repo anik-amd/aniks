@@ -37,6 +37,7 @@ src/pages/index.astro  the single page
 src/pages/404.astro    error page
 src/styles/global.css  all styling
 scripts/               fetch-activity.mjs (network), check-build.mjs (CI)
+functions/             index.ts (live track swap), now-art.ts (art proxy)
 public/covers/         hash-named cover thumbnails, refreshed weekly
 public/                robots.txt, sitemap.xml, _headers, favicon.svg, og.png
 ```
@@ -59,6 +60,23 @@ snapshot is always `/covers/<hash>.<ext>` and never a remote URL.
 That weekly bot commit is the single exception to "never ship unreviewed work": it touches
 only `src/data/activity.json` and `public/covers/`, and the same run builds, tests and
 deploys the bytes it commits.
+
+## Live track
+
+`functions/index.ts` is a Pages Function on `/`. On a visit it reads Last.fm with
+`LASTFM_API_KEY` and swaps the contents between the `now:music` markers, caching the
+fragment for 60 seconds at the edge. Nothing runs on a timer; a visit is the trigger. If
+the key is missing, Last.fm errors, or the request is not the homepage, the static block
+is served untouched and `x-now: static` says so. The function also appends `<!--now:edge-->`
+so the deploy smoke test can prove it ran.
+
+`functions/now-art.ts` proxies the live track's album art so the browser still loads images
+only from our origin. It accepts Last.fm image hosts only, caches for a day, and refuses
+anything over 1 MB.
+
+Both deploy jobs check the repository out, because `wrangler pages deploy` bundles
+`functions/` from the working directory. CI runs `wrangler pages functions build` before
+uploading `dist`, so a broken function fails the build rather than the deploy.
 
 ## Commands
 
