@@ -477,11 +477,14 @@
     min-width: 0;
   }
 
+  /* The chip reads as a player: round art, two lines, one transport button. */
   .now-player {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
+    display: inline-flex;
     align-items: center;
-    column-gap: 0.7rem;
+    gap: 0.65rem;
+    padding: 0.3rem 0.55rem 0.3rem 0.3rem;
+    border-radius: 999px;
+    background-color: var(--panel);
     text-decoration: none;
   }
 
@@ -495,11 +498,12 @@
 
   .now-art {
     display: block;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 4px;
+    width: 3rem;
+    height: 3rem;
+    flex: none;
+    border-radius: 50%;
     object-fit: cover;
-    background-color: var(--panel);
+    background-color: var(--rule);
   }
 
   .now-art-empty {
@@ -520,9 +524,9 @@
   }
 
   .now-track {
-    font-size: 0.9375rem;
-    font-weight: 600;
+    font-size: 0.875rem;
     line-height: 1.3;
+    font-weight: 600;
     letter-spacing: -0.005em;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -531,7 +535,7 @@
 
   .now-artist,
   .now-state {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     line-height: 1.3;
     color: var(--muted);
     overflow: hidden;
@@ -540,7 +544,35 @@
   }
 
   .now-state {
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* Decorative transport: the whole chip is the link to the Last.fm page. */
+  .now-play {
+    display: grid;
+    place-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    flex: none;
+    margin-left: 0.15rem;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    color: var(--accent);
+    transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+  }
+
+  .now-play svg {
+    width: 0.7rem;
+    height: 0.7rem;
+    margin-left: 1px;
+  }
+
+  .now-player:hover .now-play,
+  .now-player:focus-visible .now-play {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
   }
 
   /* The shelf holds the right end of the row, with one quiet way out. */
@@ -892,6 +924,15 @@
 
     .now-music {
       flex: 0 0 auto;
+    }
+
+    /* A full-width pill on a phone, so the copy has room. */
+    .now-player {
+      display: flex;
+    }
+
+    .now-copy {
+      flex: 1 1 auto;
     }
 
     .now-reading {
