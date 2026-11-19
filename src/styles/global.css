@@ -468,14 +468,16 @@
   /* Now: the player card and the shelf share one row. No heading, no labels. */
   .section.now {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: clamp(0.75rem, 2.2vw, 1.15rem);
   }
 
+  /* The card takes the room the covers leave, so the row stays flush right. */
   .now-music {
-    flex: 0 1 auto;
+    flex: 1 1 12rem;
     min-width: 0;
-    max-width: 16rem;
+    /* The shelf keeps headroom for the hover lift; match it so tops align. */
+    margin-top: 0.45rem;
   }
 
   .now-player {
@@ -608,7 +610,7 @@
    * inside the scroll box instead of clipping them.
    */
   .now-shelf {
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     min-width: 0;
     margin: 0;
     padding: 0.45rem 0 1rem;
@@ -917,7 +919,8 @@
     }
 
     .now-music {
-      max-width: none;
+      flex: 0 0 auto;
+      margin-top: 0;
     }
 
     .now-shelf {
