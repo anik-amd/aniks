@@ -115,6 +115,57 @@ if (existsSync(path('index.html'))) {
     .filter((url) => !url.startsWith(ORIGIN));
   if (external.length > 0) fail(`third-party resources: ${external.join(', ')}`);
 
+  // The Now section mirrors the committed snapshot, and nothing else.
+  const snapshot = JSON.parse(readFileSync('src/data/activity.json', 'utf8'));
+  const hasMusic = Boolean(snapshot.music?.track);
+  const hasBooks = Array.isArray(snapshot.books) && snapshot.books.length > 0;
+  const hasCovers = hasBooks && snapshot.books.some((book) => book.cover);
+
+  if (hasMusic || hasBooks) {
+    expect(/id="now-title"/, 'Now section missing');
+  }
+
+  if (hasMusic) {
+    const open = html.indexOf('<!--now:music-->');
+    const close = html.indexOf('<!--/now:music-->');
+    if (open === -1 || close === -1 || close < open) {
+      fail('now:music markers missing, the live swap has nowhere to land');
+    } else if (!/<a\b[^>]*href="https:\/\/www\.last\.fm\//.test(html.slice(open, close))) {
+      fail('now:music block has no Last.fm link');
+    }
+    if (snapshot.music.playedAt && snapshot.music.nowPlaying !== true) {
+      expect(/<time datetime="[^"]+"/, 'music timestamp missing');
+    }
+  }
+
+  if (hasBooks) {
+    const links = [...html.matchAll(/href="(https:\/\/www\.goodreads\.com\/book\/show\/[^"]+)"/g)];
+    if (links.length === 0) fail('no Goodreads book links in the Now section');
+  }
+
+  // Images are self-hosted covers only: local, sized, lazy, and actually shipped.
+  const images = [...html.matchAll(/<img\b[^>]*>/g)].map((match) => match[0]);
+  for (const tag of images) {
+    const src = tag.match(/\ssrc="([^"]+)"/)?.[1] ?? '';
+    if (!/^\/covers\/[a-z0-9-]+\.(?:jpg|png|webp)$/.test(src)) {
+      fail(`image is not a local cover: ${src || '(no src)'}`);
+      continue;
+    }
+    if (!/\swidth="\d+"/.test(tag) || !/\sheight="\d+"/.test(tag)) {
+      fail(`cover without intrinsic size: ${src}`);
+    }
+    if (!/\salt="/.test(tag)) fail(`cover without alt: ${src}`);
+    if (!/\sloading="lazy"/.test(tag)) fail(`cover not lazy: ${src}`);
+    if (!existsSync(path(src.slice(1)))) fail(`cover missing from dist: ${src}`);
+    else if (statSync(path(src.slice(1))).size > 200_000) fail(`cover too large: ${src}`);
+  }
+  if (hasCovers && images.length === 0) fail('book covers missing');
+
+  // The key is a build secret, never page content.
+  if (process.env.LASTFM_API_KEY && html.includes(process.env.LASTFM_API_KEY)) {
+    fail('LASTFM_API_KEY leaked into the build');
+  }
+
   // Weight budget
   const bytes = Buffer.byteLength(html);
   if (bytes > 60_000) fail(`index.html too large: ${bytes} bytes`);

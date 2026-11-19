@@ -457,6 +457,183 @@
     color: var(--accent);
   }
 
+  /* Now: a player card beside the title, then the shelf as a scrollable strip. */
+  .now-music {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+  }
+
+  .now-player {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 0.75rem;
+    padding: 0.65rem 0.8rem;
+    background-color: var(--panel);
+    border-radius: 14px;
+    text-decoration: none;
+    transition: background-color 320ms ease, color 320ms ease;
+  }
+
+  .now-player:hover .now-track,
+  .now-player:focus-visible .now-track {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.18em;
+  }
+
+  .now-art {
+    display: block;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 9px;
+    object-fit: cover;
+    background-color: var(--rule);
+  }
+
+  .now-art-empty {
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+  }
+
+  .now-art-empty svg {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .now-copy {
+    display: grid;
+    gap: 0.05rem;
+    min-width: 0;
+  }
+
+  .now-track {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .now-artist,
+  .now-state {
+    font-size: 0.8125rem;
+    line-height: 1.3;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .now-state {
+    font-size: 0.75rem;
+  }
+
+  /* Four bars: a static silhouette, or a pulse while a track is playing. */
+  .now-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 1rem;
+  }
+
+  .now-bars i {
+    width: 2.5px;
+    height: 35%;
+    border-radius: 2px;
+    background-color: var(--accent);
+    transform-origin: bottom;
+  }
+
+  .now-bars i:nth-child(2) {
+    height: 65%;
+  }
+
+  .now-bars i:nth-child(3) {
+    height: 45%;
+  }
+
+  .now-bars i:nth-child(4) {
+    height: 80%;
+  }
+
+  .now-bars.is-playing i {
+    animation: equalize 900ms ease-in-out infinite alternate;
+  }
+
+  .now-bars.is-playing i:nth-child(2) {
+    animation-delay: -300ms;
+  }
+
+  .now-bars.is-playing i:nth-child(3) {
+    animation-delay: -600ms;
+  }
+
+  .now-bars.is-playing i:nth-child(4) {
+    animation-delay: -150ms;
+  }
+
+  @keyframes equalize {
+    from {
+      transform: scaleY(0.35);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  /* The shelf scrolls sideways, so three covers never crowd a phone. */
+  .now-shelf {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: 1.5rem 0 0;
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    padding-bottom: 0.35rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule) transparent;
+  }
+
+  .now-shelf li {
+    flex: none;
+    scroll-snap-align: start;
+  }
+
+  .now-cover {
+    display: block;
+    width: 8rem;
+    height: 12rem;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    object-fit: contain;
+    background-color: var(--panel);
+    transition: transform 200ms ease, border-color 200ms ease;
+  }
+
+  .now-cover-empty {
+    display: grid;
+    place-items: center;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .now-shelf a:hover .now-cover,
+  .now-shelf a:focus-visible .now-cover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+  }
+
   /* Featured works: one card per work, the whole card is the link. */
   .cards {
     display: grid;
@@ -705,6 +882,19 @@
       grid-row: auto;
     }
 
+    .now-music {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    /* The shelf runs to both edges on a phone, so a cover is never cut by the frame. */
+    .now-shelf {
+      grid-row: auto;
+      margin-inline: calc(var(--pad) * -1);
+      padding-inline: var(--pad);
+      scroll-padding-inline: var(--pad);
+    }
+
     .links {
       margin-top: 0.7rem;
     }
@@ -715,8 +905,15 @@
     .theme-toggle .icon,
     .card,
     .card-arrow,
-    .quote {
+    .quote,
+    .now-player,
+    .now-cover,
+    .now-bars i {
       transition: none;
+    }
+
+    .now-bars i {
+      animation: none;
     }
   }
 }
@@ -757,12 +954,16 @@
     animation-delay: 270ms;
   }
 
-  .quote {
+  .section:nth-of-type(5) {
     animation-delay: 320ms;
   }
 
-  .site-footer {
+  .quote {
     animation-delay: 370ms;
+  }
+
+  .site-footer {
+    animation-delay: 420ms;
   }
 
   @media (prefers-reduced-motion: reduce) {

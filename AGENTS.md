@@ -12,10 +12,12 @@ Markdown blog and project pages are planned.
 - **Zero client JS in the source.** The only script the repo ships is the inline theme
   switcher. Anything else needs a reason. The host may append a cookieless analytics
   beacon at the edge; that is configured outside the repo and never vendored here.
-- **Two self-hosted fonts, no analytics libraries, no images.** Fraunces for the name and
+- **Two self-hosted fonts, no analytics libraries, no remote images.** Fraunces for the name and
   the quote, IBM Plex Sans for everything else. Both are subset to Latin and live in
   `public/fonts/` with their OFL licences. Nothing is fetched from a font CDN and no third
-  family is added. The single raster asset is `public/og.png`.
+  family is added. Raster assets are `public/og.png` and the cover thumbnails in
+  `public/covers/`. Covers are downloaded by the weekly snapshot, named by content hash and
+  never hotlinked from Goodreads or Last.fm.
 
 ## Stack
 
@@ -27,15 +29,36 @@ Markdown blog and project pages are planned.
 
 ```
 src/consts.ts          site metadata, every link, the quote
+src/data/activity.json the weekly Now snapshot (bot-maintained)
+src/data/activity.ts   validates that snapshot, drops anything malformed
 src/layouts/Base.astro <head>, theme bootstrap, masthead, footer
 src/components/        ThemeToggle
 src/pages/index.astro  the single page
 src/pages/404.astro    error page
 src/styles/global.css  all styling
+scripts/               fetch-activity.mjs (network), check-build.mjs (CI)
+public/covers/         hash-named cover thumbnails, refreshed weekly
 public/                robots.txt, sitemap.xml, _headers, favicon.svg, og.png
 ```
 
 Links and copy live in `src/consts.ts`. Adding a link means editing that file, not the page.
+
+## Now snapshot
+
+The Now section reads `src/data/activity.json`; nothing fetches Last.fm or Goodreads during
+a build. `scripts/fetch-activity.mjs` refreshes the file weekly from CI (Mondays 05:17 UTC,
+plus manual dispatch), using `LASTFM_API_KEY` from the Actions secrets. Goodreads has no
+usable feed any more, so the script reads its profile page; Last.fm is read through its API.
+The script never fails a run — a blocked or broken source leaves the previous snapshot in
+place.
+
+The same run downloads album art and book covers into `public/covers/`, names each file by a
+hash of its bytes and deletes any cover nothing points at. That is why a cover path in the
+snapshot is always `/covers/<hash>.<ext>` and never a remote URL.
+
+That weekly bot commit is the single exception to "never ship unreviewed work": it touches
+only `src/data/activity.json` and `public/covers/`, and the same run builds, tests and
+deploys the bytes it commits.
 
 ## Commands
 
@@ -66,12 +89,16 @@ the pull request is merged and the same build ships. Never ship unreviewed work.
   rest. Measure stays under ~65 characters.
 - The name is the page's one large thing. Sections are separated by space, not by rules;
   section titles hang in a left column with their links in the right one. The quote is
-  the page's only field of colour (`--panel`), opened by an accent quotation mark.
+  the page's one full-bleed field of colour (`--panel`), opened by an accent quotation mark.
+- Now is image-led and label-free: a player card with album art beside the title, then a
+  shelf of book covers that scrolls sideways. The art is the label, so no "Listening" or
+  "Reading" text is added. The player card is the only other panel on the page; covers carry
+  their own colour and are the only images besides `og.png`.
 - Links sit in a wrapped row with generous gaps and no separator glyph; underlines use
   the accent.
-- Motion is CSS only: a 320ms colour fade on theme change, a 180ms icon swap, and a
-  short staggered entrance on first paint. Everything is disabled under
-  `prefers-reduced-motion`.
+- Motion is CSS only: a 320ms colour fade on theme change, a 180ms icon swap, a short
+  staggered entrance on first paint, and equalizer bars that pulse only while a track is
+  playing. Everything is disabled under `prefers-reduced-motion`.
 
 ## SEO invariants
 

@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  # The Now snapshot is refreshed weekly, then the same build ships.
+  schedule:
+    - cron: '17 5 * * 1'
 
 # One run per ref; new pushes cancel older ones. Keeps Actions minutes down.
 concurrency:
@@ -19,12 +22,22 @@ jobs:
     name: Build and test
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    # Only the weekly refresh needs to write, and only to the snapshot.
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+
+      # Last.fm and Goodreads are read here, once a week, never during a build.
+      - name: Refresh the Now snapshot
+        if: github.event_name == 'schedule'
+        env:
+          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
+        run: node scripts/fetch-activity.mjs
 
       # No lockfile yet, so install rather than ci. Swap to `npm ci` once
       # package-lock.json is committed.
@@ -44,6 +57,23 @@ jobs:
           path: dist
           retention-days: 7
           if-no-files-found: error
+
+      # Pushed with GITHUB_TOKEN on purpose: it must not start a second run.
+      # This run has already built and tested the same bytes it is committing.
+      # Never blocking: if main is protected, next week refreshes anyway.
+      - name: Commit the refreshed snapshot
+        if: github.event_name == 'schedule'
+        continue-on-error: true
+        run: |
+          if [ -z "$(git status --porcelain -- src/data/activity.json public/covers)" ]; then
+            echo "snapshot unchanged"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A src/data/activity.json public/covers
+          git commit -m 'chore: refresh now data'
+          git push
 
   preview:
     name: Preview deploy
@@ -90,7 +120,7 @@ jobs:
 
   deploy:
     name: Production deploy
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'schedule'
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 8
