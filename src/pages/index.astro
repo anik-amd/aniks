@@ -1,9 +1,28 @@
 ---
 import Base from '../layouts/Base.astro';
-import { FEATURED, PERSON, QUOTE, SAME_AS, SECTIONS, SITE } from '../consts';
+import { FEATURED, NOW_PROFILES, PERSON, QUOTE, SAME_AS, SECTIONS, SITE } from '../consts';
+import { ACTIVITY } from '../data/activity';
 import { LINK_ICONS } from '../link-icons';
 
 const nameChars = [...PERSON.name];
+
+// The weekly snapshot. Build-time only: the page never asks for this itself.
+const { music, books } = ACTIVITY;
+const hasNow = Boolean(music) || books.length > 0;
+
+// Absolute, never relative: a build-time "2 hours ago" would freeze into a lie.
+const playedLabel = music?.playedAt
+  ? new Intl.DateTimeFormat('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      timeZone: 'Asia/Dhaka',
+    }).format(new Date(music.playedAt))
+  : null;
+
+const trackLabel = music ? [music.track, music.artist].filter(Boolean).join(' by ') : '';
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -85,6 +104,118 @@ const structuredData = {
       never finish.
     </p>
   </div>
+
+  {
+    hasNow && (
+      <section class="section now" aria-label="Last played and reading">
+        {music && (
+          <div class="now-music">
+            <!--now:music-->
+            <a
+              class="now-player"
+              href={NOW_PROFILES.lastfm}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${trackLabel}, open my Last.fm profile`}
+            >
+              <span class="now-label">Last played</span>
+              <span class="now-row">
+                <span class="now-art-wrap">
+                  {music.art ? (
+                    <img
+                      class="now-art"
+                      src={music.art}
+                      alt=""
+                      width="64"
+                      height="64"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <span class="now-art now-art-empty" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        focusable="false"
+                      >
+                        <path d="M9 17.5V6l10-2v11.5" />
+                        <circle cx="6.5" cy="17.5" r="2.5" />
+                        <circle cx="16.5" cy="15.5" r="2.5" />
+                      </svg>
+                    </span>
+                  )}
+                  <span class="now-play" aria-hidden="true">
+                    <svg viewBox="0 0 12 12" fill="currentColor" focusable="false">
+                      <path d="M3 1.8v8.4L10 6z" />
+                    </svg>
+                  </span>
+                </span>
+                <span class="now-copy">
+                  <span class="now-track">{music.track}</span>
+                  {music.artist && <span class="now-artist">{music.artist}</span>}
+                  {playedLabel && (
+                    <span class="now-state">
+                      <time datetime={music.playedAt}>{playedLabel}</time>
+                    </span>
+                  )}
+                </span>
+              </span>
+            </a>
+            <!--/now:music-->
+          </div>
+        )}
+        {books.length > 0 && (
+          <div class="now-reading">
+            <a
+              class="now-label"
+              href={NOW_PROFILES.goodreads}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="See all of my books on Goodreads"
+            >
+              Reading
+            </a>
+            <ul class="now-shelf" aria-label="Currently reading">
+              {books.map((book) => (
+                <li>
+                  <a
+                    href={book.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${book.title}${book.author ? ` by ${book.author}` : ''}, on Goodreads`}
+                  >
+                    {book.cover ? (
+                      <img
+                        class="now-cover"
+                        src={book.cover}
+                        alt=""
+                        width="64"
+                        height="96"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <span class="now-cover now-cover-empty">{book.title}</span>
+                    )}
+                    {books.length === 1 && (
+                      <span class="now-book-copy">
+                        <span class="now-book-title">{book.title}</span>
+                        {book.author && <span class="now-book-author">{book.author}</span>}
+                      </span>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
+    )
+  }
 
   <section class="section featured" aria-labelledby="featured-title">
     <h2 class="section-title" id="featured-title">

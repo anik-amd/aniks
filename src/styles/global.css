@@ -57,6 +57,10 @@
   --accent: #2c6b4f;
   --selection: #d6e7dc;
 
+  /* Covers sit on the page like objects, not in frames. */
+  --cover-shadow: 0 1px 2px rgb(20 24 26 / 0.16), 0 10px 20px -12px rgb(20 24 26 / 0.55);
+  --cover-shadow-hover: 0 2px 4px rgb(20 24 26 / 0.16), 0 18px 28px -12px rgb(20 24 26 / 0.5);
+
   --font: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     sans-serif;
   --display: 'Fraunces', 'Iowan Old Style', Palatino, Georgia, ui-serif, serif;
@@ -81,6 +85,8 @@
   --rule: #232c28;
   --accent: #8fd3ae;
   --selection: #1b3529;
+  --cover-shadow: 0 1px 2px rgb(0 0 0 / 0.6), 0 10px 22px -10px rgb(0 0 0 / 0.9);
+  --cover-shadow-hover: 0 2px 6px rgb(0 0 0 / 0.6), 0 18px 30px -12px rgb(0 0 0 / 0.95);
 }
 
 /* System default: follow prefers-color-scheme unless light was chosen explicitly. */
@@ -95,6 +101,8 @@
     --rule: #232c28;
     --accent: #8fd3ae;
     --selection: #1b3529;
+    --cover-shadow: 0 1px 2px rgb(0 0 0 / 0.6), 0 10px 22px -10px rgb(0 0 0 / 0.9);
+    --cover-shadow-hover: 0 2px 6px rgb(0 0 0 / 0.6), 0 18px 30px -12px rgb(0 0 0 / 0.95);
   }
 }
 
@@ -107,6 +115,8 @@
 
   html {
     -webkit-text-size-adjust: 100%;
+    /* No grey/green flash over a whole card when a phone taps a link. */
+    -webkit-tap-highlight-color: transparent;
   }
 
   body,
@@ -176,11 +186,16 @@
     text-decoration-thickness: 1px;
     text-underline-offset: 0.24em;
     text-decoration-color: var(--accent);
-    transition: color 320ms ease, text-decoration-color 200ms ease;
+    transition: color 320ms ease, text-decoration-color 200ms ease, opacity 60ms ease;
   }
 
   a:hover {
     color: var(--accent);
+  }
+
+  /* A press on a touch screen gets a 60ms dip, since it has no cursor to follow. */
+  a:active {
+    opacity: 0.7;
   }
 
   :focus-visible {
@@ -457,6 +472,261 @@
     color: var(--accent);
   }
 
+  /*
+   * Now is a coda to the intro, not a section of its own: it starts close to
+   * the bio and stays one left-aligned cluster, so it reads as a status block
+   * rather than a toolbar spread across the page.
+   */
+  .section.now {
+    margin-top: 1.75rem;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1.75rem;
+  }
+
+  /* Two groups, each a tiny label over its content, so their tops line up. */
+  .now-music {
+    min-width: 0;
+  }
+
+  .now-reading {
+    display: grid;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+
+  /* Labels double as links: the reading one opens the shelf, the music one the profile. */
+  .now-label {
+    justify-self: start;
+    /* A 24px-tall hit area without moving the label. */
+    padding-block: 0.35rem;
+    margin-block: -0.35rem;
+    font-size: 0.6875rem;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: currentColor;
+    text-underline-offset: 0.28em;
+    transition: color 200ms ease, text-decoration-color 200ms ease;
+  }
+
+  .now-label:hover,
+  .now-label:focus-visible,
+  .now-player:hover .now-label,
+  .now-player:focus-visible .now-label {
+    color: var(--text);
+    text-decoration-color: var(--accent);
+  }
+
+  .now-player {
+    display: grid;
+    gap: 0.45rem;
+    text-decoration: none;
+  }
+
+  .now-row {
+    /* The shelf keeps headroom for its hover lift; match it so the art lines up. */
+    margin-top: 0.35rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .now-player:hover .now-track,
+  .now-player:focus-visible .now-track {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.18em;
+  }
+
+  /* Album art and covers are the same object: same width, same shadow. */
+  .now-art-wrap {
+    position: relative;
+    display: block;
+    flex: none;
+  }
+
+  .now-art {
+    display: block;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 4px;
+    object-fit: cover;
+    box-shadow: var(--cover-shadow);
+    background-color: var(--rule);
+  }
+
+  .now-art-empty {
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+  }
+
+  .now-art-empty svg {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .now-copy {
+    display: grid;
+    gap: 0.05rem;
+    min-width: 0;
+  }
+
+  .now-track {
+    font-size: 0.875rem;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .now-artist,
+  .now-state {
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .now-state {
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+  }
+
+  /*
+   * The transport sits on the art's corner, so the block reads as music before
+   * anything is hovered. It is decorative: the whole player is the link.
+   */
+  .now-play {
+    position: absolute;
+    right: -0.3rem;
+    bottom: -0.3rem;
+    display: grid;
+    place-items: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 50%;
+    background-color: var(--bg);
+    border: 1px solid var(--rule);
+    color: var(--accent);
+    transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+  }
+
+  .now-play svg {
+    width: 0.6rem;
+    height: 0.6rem;
+    margin-left: 1px;
+  }
+
+  .now-player:hover .now-play,
+  .now-player:focus-visible .now-play {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+
+  /*
+   * The shelf scrolls sideways once there are more books than fit. Padding
+   * keeps the hover lift and the shadow inside the scroll box.
+   */
+  .now-shelf {
+    min-width: 0;
+    margin: 0;
+    padding: 0.35rem 0 0.9rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .now-shelf::-webkit-scrollbar {
+    display: none;
+  }
+
+  .now-shelf li {
+    flex: none;
+    scroll-snap-align: start;
+  }
+
+  /* One book carries its title and author; a shelf of covers needs neither. */
+  .now-shelf a {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    border-radius: 2px;
+    text-decoration: none;
+  }
+
+  .now-shelf a:hover .now-book-title,
+  .now-shelf a:focus-visible .now-book-title {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.18em;
+  }
+
+  .now-book-copy {
+    display: grid;
+    gap: 0.05rem;
+    max-width: 12rem;
+    min-width: 0;
+  }
+
+  .now-book-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    text-wrap: pretty;
+  }
+
+  .now-book-author {
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: var(--muted);
+  }
+
+  /* No frame, no letterbox: the cover fills its slot like a book on a shelf. */
+  .now-cover {
+    display: block;
+    width: 4rem;
+    height: 6rem;
+    border-radius: 2px;
+    object-fit: cover;
+    box-shadow: var(--cover-shadow);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+  }
+
+  .now-cover-empty {
+    display: grid;
+    place-items: center;
+    padding: 0.4rem;
+    font-size: 0.65rem;
+    line-height: 1.25;
+    color: var(--muted);
+    text-align: center;
+    background-color: var(--panel);
+  }
+
+  .now-shelf a:hover .now-cover,
+  .now-shelf a:focus-visible .now-cover {
+    transform: translateY(-4px) scale(1.015);
+    box-shadow: var(--cover-shadow-hover);
+  }
+
   /* Featured works: one card per work, the whole card is the link. */
   .cards {
     display: grid;
@@ -472,14 +742,15 @@
     transition: border-color 200ms ease, background-color 320ms ease;
   }
 
-  .card:hover {
-    border-color: var(--accent);
-  }
-
   /* One ring on focus, not a ring inside a ring. */
   .card:focus-within {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
+  }
+
+  /* Touch has no hover, so a press gets its own acknowledgement. */
+  .card:active {
+    border-color: var(--accent);
   }
 
   .card-link {
@@ -516,7 +787,6 @@
     transition: color 200ms ease, transform 200ms ease;
   }
 
-  .card:hover .card-arrow,
   .card:focus-within .card-arrow {
     color: var(--accent);
     transform: translate(2px, -2px);
@@ -532,12 +802,30 @@
     text-wrap: pretty;
   }
 
-  .card:hover .card-title,
   .card:focus-within .card-title {
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-decoration-color: var(--accent);
     text-underline-offset: 0.2em;
+  }
+
+  /* Hover only where a real pointer exists; on touch it would stick after a tap. */
+  @media (hover: hover) {
+    .card:hover {
+      border-color: var(--accent);
+    }
+
+    .card:hover .card-arrow {
+      color: var(--accent);
+      transform: translate(2px, -2px);
+    }
+
+    .card:hover .card-title {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-decoration-color: var(--accent);
+      text-underline-offset: 0.2em;
+    }
   }
 
   .card-note {
@@ -705,6 +993,20 @@
       grid-row: auto;
     }
 
+    /* On a phone the track takes its own line, then the shelf runs edge to edge. */
+    .section.now {
+      margin-top: 1.5rem;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.25rem;
+    }
+
+    .now-shelf {
+      margin-inline: calc(var(--pad) * -1);
+      padding-inline: var(--pad);
+      scroll-padding-inline: var(--pad);
+    }
+
     .links {
       margin-top: 0.7rem;
     }
@@ -715,7 +1017,10 @@
     .theme-toggle .icon,
     .card,
     .card-arrow,
-    .quote {
+    .quote,
+    .now-cover,
+    .now-play,
+    .now-label {
       transition: none;
     }
   }
@@ -757,12 +1062,16 @@
     animation-delay: 270ms;
   }
 
-  .quote {
+  .section:nth-of-type(5) {
     animation-delay: 320ms;
   }
 
-  .site-footer {
+  .quote {
     animation-delay: 370ms;
+  }
+
+  .site-footer {
+    animation-delay: 420ms;
   }
 
   @media (prefers-reduced-motion: reduce) {

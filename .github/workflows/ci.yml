@@ -5,6 +5,14 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+    inputs:
+      persist:
+        description: Commit the refreshed snapshot instead of only building it
+        type: boolean
+        default: false
+  # The Now snapshot is refreshed weekly, then the same build ships.
+  schedule:
+    - cron: '17 5 * * 1'
 
 # One run per ref; new pushes cancel older ones. Keeps Actions minutes down.
 concurrency:
@@ -19,12 +27,24 @@ jobs:
     name: Build and test
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    # Only the weekly refresh needs to write, and only to the snapshot.
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+
+      # Last.fm and Goodreads are read here, once a week, never during a build.
+      # A manual dispatch refreshes too, which is how a branch preview can show
+      # live data without committing anything.
+      - name: Refresh the Now snapshot
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        env:
+          LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
+        run: node scripts/fetch-activity.mjs
 
       # No lockfile yet, so install rather than ci. Swap to `npm ci` once
       # package-lock.json is committed.
@@ -45,11 +65,29 @@ jobs:
           retention-days: 7
           if-no-files-found: error
 
+      # Pushed with GITHUB_TOKEN on purpose: it must not start a second run.
+      # This run has already built and tested the same bytes it is committing.
+      # Never blocking: if main is protected, next week refreshes anyway.
+      - name: Commit the refreshed snapshot
+        if: github.event_name == 'schedule' || github.event.inputs.persist == 'true'
+        continue-on-error: true
+        run: |
+          if [ -z "$(git status --porcelain -- src/data/activity.json public/covers)" ]; then
+            echo "snapshot unchanged"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A src/data/activity.json public/covers
+          git commit -m 'chore: refresh now data'
+          git push
+
   preview:
     name: Preview deploy
-    # Every pull request gets its own Cloudflare preview URL. Nothing reaches
-    # production until the pull request is merged.
-    if: github.event_name == 'pull_request'
+    # Every pull request gets its own Cloudflare preview URL. A manual dispatch
+    # on a branch does the same, which is how the Now row can be checked against
+    # live Last.fm data before a merge.
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main')
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 8
@@ -75,12 +113,13 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
+          branch="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
           npx --yes wrangler@4 pages deploy dist \
             --project-name=aniks \
-            --branch="${GITHUB_HEAD_REF}" \
+            --branch="$branch" \
             --commit-dirty=true | tee deploy.log
           url=$(grep -Eo 'https://[a-z0-9]+\.aniks\.pages\.dev' deploy.log | head -n1)
-          alias_url="https://$(echo "${GITHUB_HEAD_REF}" | tr '/' '-' | tr '[:upper:]' '[:lower:]').aniks.pages.dev"
+          alias_url="https://$(echo "$branch" | tr '/' '-' | tr '[:upper:]' '[:lower:]').aniks.pages.dev"
           {
             echo "### Preview ready"
             echo ""
@@ -90,7 +129,9 @@ jobs:
 
   deploy:
     name: Production deploy
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # A manual dispatch on main is how the snapshot gets refreshed on demand:
+    # same path as the weekly run, without waiting for Monday.
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 8

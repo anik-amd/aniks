@@ -1,0 +1,29 @@
+{
+  "updated": "2026-11-19T13:32:30.130Z",
+  "music": {
+    "artist": "Derik Fein",
+    "track": "1991",
+    "playedAt": "2026-11-19T12:23:49.000Z",
+    "art": "/covers/art-2a4553f372.webp"
+  },
+  "books": [
+    {
+      "title": "Exoplanet",
+      "author": "Benjamin Percy",
+      "url": "https://www.goodreads.com/book/show/256792251-exoplanet",
+      "cover": "/covers/book-3427e9c8f8.jpg"
+    },
+    {
+      "title": "Café in Berlin",
+      "author": "André Klein",
+      "url": "https://www.goodreads.com/book/show/18806935-caf-in-berlin",
+      "cover": "/covers/book-8142b21460.jpg"
+    },
+    {
+      "title": "Ikigai: The Japanese Secret to a Long and Happy Life",
+      "author": "Héctor García",
+      "url": "https://www.goodreads.com/book/show/124950497-ikigai",
+      "cover": "/covers/book-d82136f36d.jpg"
+    }
+  ]
+}
