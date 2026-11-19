@@ -465,11 +465,17 @@
     color: var(--accent);
   }
 
-  /* Now: one quiet row. Album art and the last track, then the shelf. */
+  /*
+   * Now is a coda to the intro, not a section of its own: it starts close to
+   * the bio and stays one left-aligned cluster, so it reads as a status line
+   * rather than a toolbar spread across the page.
+   */
   .section.now {
+    margin-top: 1.75rem;
     display: flex;
     align-items: center;
-    gap: clamp(1rem, 3vw, 1.75rem);
+    flex-wrap: wrap;
+    gap: 1.5rem;
   }
 
   .now-music {
@@ -477,14 +483,10 @@
     min-width: 0;
   }
 
-  /* The chip reads as a player: round art, two lines, one transport button. */
   .now-player {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 0.65rem;
-    padding: 0.3rem 0.55rem 0.3rem 0.3rem;
-    border-radius: 999px;
-    background-color: var(--panel);
+    gap: 0.8rem;
     text-decoration: none;
   }
 
@@ -496,13 +498,20 @@
     text-underline-offset: 0.18em;
   }
 
+  /* Album art and covers are the same object: same width, same shadow. */
+  .now-art-wrap {
+    position: relative;
+    display: block;
+    flex: none;
+  }
+
   .now-art {
     display: block;
-    width: 3rem;
-    height: 3rem;
-    flex: none;
-    border-radius: 50%;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 4px;
     object-fit: cover;
+    box-shadow: var(--cover-shadow);
     background-color: var(--rule);
   }
 
@@ -548,23 +557,28 @@
     letter-spacing: 0.02em;
   }
 
-  /* Decorative transport: the whole chip is the link to the Last.fm page. */
+  /*
+   * The transport sits on the art's corner, so the block reads as music before
+   * anything is hovered. It is decorative: the whole player is the link.
+   */
   .now-play {
+    position: absolute;
+    right: -0.3rem;
+    bottom: -0.3rem;
     display: grid;
     place-items: center;
-    width: 1.6rem;
-    height: 1.6rem;
-    flex: none;
-    margin-left: 0.15rem;
-    border: 1px solid var(--rule);
+    width: 1.35rem;
+    height: 1.35rem;
     border-radius: 50%;
+    background-color: var(--bg);
+    border: 1px solid var(--rule);
     color: var(--accent);
     transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
   }
 
   .now-play svg {
-    width: 0.7rem;
-    height: 0.7rem;
+    width: 0.6rem;
+    height: 0.6rem;
     margin-left: 1px;
   }
 
@@ -575,16 +589,13 @@
     color: var(--bg);
   }
 
-  /* The shelf holds the right end of the row, with one quiet way out. */
+  /* Covers and the way out sit together, straight after the track. */
   .now-reading {
     display: flex;
     align-items: center;
     gap: 0.9rem;
+    flex: 0 1 auto;
     min-width: 0;
-  }
-
-  .now-music + .now-reading {
-    margin-left: auto;
   }
 
   /*
@@ -917,32 +928,20 @@
 
     /* On a phone the track takes its own line, then the shelf runs edge to edge. */
     .section.now {
+      margin-top: 1.5rem;
       flex-direction: column;
       align-items: stretch;
-      gap: 1rem;
+      gap: 1.1rem;
     }
 
     .now-music {
       flex: 0 0 auto;
     }
 
-    /* A full-width pill on a phone, so the copy has room. */
-    .now-player {
-      display: flex;
-    }
-
-    .now-copy {
-      flex: 1 1 auto;
-    }
-
     .now-reading {
       flex-direction: column;
       align-items: stretch;
       gap: 0.5rem;
-    }
-
-    .now-music + .now-reading {
-      margin-left: 0;
     }
 
     .now-shelf {
