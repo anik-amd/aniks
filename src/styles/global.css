@@ -966,6 +966,7 @@
     .card-arrow,
     .quote,
     .now-cover,
+    .now-play,
     .now-more {
       transition: none;
     }
