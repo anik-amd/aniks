@@ -524,7 +524,7 @@
     /* The shelf keeps headroom for its hover lift; match it so the art lines up. */
     margin-top: 0.35rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.8rem;
   }
 
@@ -657,7 +657,7 @@
   /* One book carries its title and author; a shelf of covers needs neither. */
   .now-shelf a {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.65rem;
     border-radius: 2px;
     text-decoration: none;
