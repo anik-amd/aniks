@@ -91,12 +91,13 @@ the pull request is merged and the same build ships. Never ship unreviewed work.
   section titles hang in a left column with their links in the right one. The quote is
   the page's one full-bleed field of colour (`--panel`), opened by an accent quotation mark.
 - Now is a coda to the intro, not a section: it starts close to the bio and stays one
-  left-aligned cluster of two groups, each a tiny label ("Last played", "Reading") over
-  its content — album art with a corner play mark and the track, then the shelf of covers
-  and a single "See more" link to Goodreads. The labels are 11px muted, sentence case.
-  The whole player opens the Last.fm profile. Album art and covers share one shadow token
-  and read as objects, not pictures in frames; covers lift on hover. Covers are the only
-  images besides `og.png`, and the quote stays the page's only full-bleed panel.
+  left-aligned cluster of two groups, each a tiny 11px sentence-case label over its
+  content. The labels are also the exits — "Last played" opens the Last.fm profile (the
+  whole player does), "Reading" opens the Goodreads shelf — so there is no separate
+  "See more" link. A lone book shows its cover, title and author; two or three show
+  covers only and scroll sideways. Album art and covers share one shadow token and read
+  as objects, not pictures in frames; covers lift on hover. Covers are the only images
+  besides `og.png`, and the quote stays the page's only full-bleed panel.
 - Links sit in a wrapped row with generous gaps and no separator glyph; underlines use
   the accent.
 - Motion is CSS only: a 320ms colour fade on theme change, a 180ms icon swap, a short

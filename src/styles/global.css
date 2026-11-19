@@ -479,27 +479,53 @@
   }
 
   /* Two groups, each a tiny label over its content, so their tops line up. */
-  .now-music,
+  .now-music {
+    min-width: 0;
+  }
+
   .now-reading {
     display: grid;
     gap: 0.45rem;
     min-width: 0;
   }
 
+  /* Labels double as links: the reading one opens the shelf, the music one the profile. */
   .now-label {
+    justify-self: start;
+    /* A 24px-tall hit area without moving the label. */
+    padding-block: 0.35rem;
+    margin-block: -0.35rem;
     font-size: 0.6875rem;
     line-height: 1.2;
     letter-spacing: 0.01em;
     color: var(--muted);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--rule);
+    text-underline-offset: 0.28em;
+    transition: color 200ms ease, text-decoration-color 200ms ease;
+  }
+
+  .now-label:hover,
+  .now-label:focus-visible,
+  .now-player:hover .now-label,
+  .now-player:focus-visible .now-label {
+    color: var(--text);
+    text-decoration-color: var(--accent);
   }
 
   .now-player {
+    display: grid;
+    gap: 0.45rem;
+    text-decoration: none;
+  }
+
+  .now-row {
     /* The shelf keeps headroom for its hover lift; match it so the art lines up. */
     margin-top: 0.35rem;
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    text-decoration: none;
   }
 
   .now-player:hover .now-track,
@@ -601,14 +627,6 @@
     color: var(--bg);
   }
 
-  /* Covers and the way out sit together, straight after the track. */
-  .now-books {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-    min-width: 0;
-  }
-
   /*
    * The shelf scrolls sideways once there are more books than fit. Padding
    * keeps the hover lift and the shadow inside the scroll box.
@@ -636,9 +654,42 @@
     scroll-snap-align: start;
   }
 
+  /* One book carries its title and author; a shelf of covers needs neither. */
   .now-shelf a {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
     border-radius: 2px;
+    text-decoration: none;
+  }
+
+  .now-shelf a:hover .now-book-title,
+  .now-shelf a:focus-visible .now-book-title {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.18em;
+  }
+
+  .now-book-copy {
+    display: grid;
+    gap: 0.05rem;
+    max-width: 12rem;
+    min-width: 0;
+  }
+
+  .now-book-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    text-wrap: pretty;
+  }
+
+  .now-book-author {
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: var(--muted);
   }
 
   /* No frame, no letterbox: the cover fills its slot like a book on a shelf. */
@@ -667,26 +718,6 @@
   .now-shelf a:focus-visible .now-cover {
     transform: translateY(-4px) scale(1.015);
     box-shadow: var(--cover-shadow-hover);
-  }
-
-  /* The one exit from the shelf, kept quieter than the covers. */
-  .now-more {
-    flex: none;
-    font-size: 0.8125rem;
-    line-height: 1.2;
-    color: var(--muted);
-    text-decoration: none;
-    white-space: nowrap;
-    transition: color 200ms ease;
-  }
-
-  .now-more span {
-    color: var(--accent);
-  }
-
-  .now-more:hover,
-  .now-more:focus-visible {
-    color: var(--text);
   }
 
   /* Featured works: one card per work, the whole card is the link. */
@@ -945,20 +976,10 @@
       gap: 1.25rem;
     }
 
-    .now-books {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.5rem;
-    }
-
     .now-shelf {
       margin-inline: calc(var(--pad) * -1);
       padding-inline: var(--pad);
       scroll-padding-inline: var(--pad);
-    }
-
-    .now-more {
-      align-self: flex-end;
     }
 
     .links {
@@ -974,7 +995,7 @@
     .quote,
     .now-cover,
     .now-play,
-    .now-more {
+    .now-label {
       transition: none;
     }
   }
