@@ -38,6 +38,18 @@ const escape = (value: string): string =>
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char] ?? char,
   );
 
+/** Must match the allowlist in now-art.ts, or the img would 400 and break. */
+const ART_HOST = /^lastfm(?:-img\d?)?\.(?:freetls\.fastly|akamaized)\.net$/;
+const allowedArt = (value: string | null): value is string => {
+  if (!value) return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && ART_HOST.test(url.hostname);
+  } catch {
+    return false;
+  }
+};
+
 /** Absolute, in the same timezone the build uses, so the two never disagree. */
 const formatPlayed = (iso: string): string =>
   new Intl.DateTimeFormat('en-GB', {
@@ -105,7 +117,7 @@ const readTrack = async (apiKey: string): Promise<Track | null> => {
 /** Same markup the page builds, so one set of styles covers both. */
 const render = (track: Track): string => {
   const label = `${track.track}${track.artist ? ` by ${track.artist}` : ''}, open my Last.fm profile`;
-  const art = track.art
+  const art = allowedArt(track.art)
     ? `<img class="now-art" src="/now-art?u=${encodeURIComponent(track.art)}" alt="" width="64" height="64" loading="lazy" decoding="async">`
     : `<span class="now-art now-art-empty" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M9 17.5V6l10-2v11.5"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="15.5" r="2.5"/></svg></span>`;
 
