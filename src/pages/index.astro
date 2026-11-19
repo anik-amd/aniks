@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { FEATURED, PERSON, QUOTE, SAME_AS, SECTIONS, SITE } from '../consts';
+import { FEATURED, NOW_PROFILES, PERSON, QUOTE, SAME_AS, SECTIONS, SITE } from '../consts';
 import { ACTIVITY } from '../data/activity';
 import { LINK_ICONS } from '../link-icons';
 
@@ -107,7 +107,7 @@ const structuredData = {
 
   {
     hasNow && (
-      <section class="section now" aria-label="Now">
+      <section class="section now" aria-label="Last played and reading">
         {music && (
           <div class="now-music">
             <!--now:music-->
@@ -123,8 +123,8 @@ const structuredData = {
                   class="now-art"
                   src={music.art}
                   alt=""
-                  width="72"
-                  height="72"
+                  width="56"
+                  height="56"
                   loading="lazy"
                   decoding="async"
                 />
@@ -149,9 +149,7 @@ const structuredData = {
                 <span class="now-track">{music.track}</span>
                 {music.artist && <span class="now-artist">{music.artist}</span>}
                 <span class="now-state">
-                  {music.nowPlaying ? (
-                    'Now playing'
-                  ) : playedLabel ? (
+                  {playedLabel ? (
                     <>
                       Last played <time datetime={music.playedAt}>{playedLabel}</time>
                     </>
@@ -160,43 +158,48 @@ const structuredData = {
                   )}
                 </span>
               </span>
-              <span class:list={['now-bars', { 'is-playing': music.nowPlaying }]} aria-hidden="true">
-                <i></i>
-                <i></i>
-                <i></i>
-                <i></i>
-              </span>
             </a>
             <!--/now:music-->
           </div>
         )}
         {books.length > 0 && (
-          <ul class="now-shelf" aria-label="Currently reading">
-            {books.map((book) => (
-              <li>
-                <a
-                  href={book.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${book.title}${book.author ? ` by ${book.author}` : ''}, on Goodreads`}
-                >
-                  {book.cover ? (
-                    <img
-                      class="now-cover"
-                      src={book.cover}
-                      alt=""
-                      width="80"
-                      height="120"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  ) : (
-                    <span class="now-cover now-cover-empty">{book.title}</span>
-                  )}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div class="now-reading">
+            <ul class="now-shelf" aria-label="Currently reading">
+              {books.map((book) => (
+                <li>
+                  <a
+                    href={book.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${book.title}${book.author ? ` by ${book.author}` : ''}, on Goodreads`}
+                  >
+                    {book.cover ? (
+                      <img
+                        class="now-cover"
+                        src={book.cover}
+                        alt=""
+                        width="64"
+                        height="96"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <span class="now-cover now-cover-empty">{book.title}</span>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a
+              class="now-more"
+              href={NOW_PROFILES.goodreads}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="See more books on Goodreads"
+            >
+              See more<span aria-hidden="true"> ↗</span>
+            </a>
+          </div>
         )}
       </section>
     )

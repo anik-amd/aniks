@@ -133,7 +133,7 @@ if (existsSync(path('index.html'))) {
     } else if (!/<a\b[^>]*href="https:\/\/www\.last\.fm\//.test(html.slice(open, close))) {
       fail('now:music block has no Last.fm link');
     }
-    if (snapshot.music.playedAt && snapshot.music.nowPlaying !== true) {
+    if (snapshot.music.playedAt) {
       expect(/<time datetime="[^"]+"/, 'music timestamp missing');
     }
   }
@@ -141,6 +141,10 @@ if (existsSync(path('index.html'))) {
   if (hasBooks) {
     const links = [...html.matchAll(/href="(https:\/\/www\.goodreads\.com\/book\/show\/[^"]+)"/g)];
     if (links.length === 0) fail('no Goodreads book links in the Now section');
+    expect(
+      /href="https:\/\/www\.goodreads\.com\/anik_amd"/,
+      'the shelf has no See more link',
+    );
   }
 
   // Images are self-hosted covers only: local, sized, lazy, and actually shipped.

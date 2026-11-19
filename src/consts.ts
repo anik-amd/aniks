@@ -90,6 +90,15 @@ export const SAME_AS = SECTIONS.flatMap((section) =>
   section.links.filter((link) => link.href.startsWith('http')).map((link) => link.href),
 );
 
+/** The profiles the Now row links out to, kept in step with SECTIONS. */
+const findProfile = (label: string) =>
+  SECTIONS.flatMap((section) => section.links).find((link) => link.label === label)?.href ?? '';
+
+export const NOW_PROFILES = {
+  lastfm: findProfile('Last.fm'),
+  goodreads: findProfile('Goodreads'),
+};
+
 export type Feature = {
   /** Short kind label, rendered as #tag. */
   tag: string;

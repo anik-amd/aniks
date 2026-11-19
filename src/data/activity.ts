@@ -12,8 +12,7 @@ export type Music = {
   track: string;
   /** Last.fm page for the track. */
   url: string;
-  nowPlaying: boolean;
-  /** ISO timestamp, or null while a track is still playing. */
+  /** ISO timestamp of the scrobble, or null when it cannot be known. */
   playedAt: string | null;
   /** Self-hosted album art, or null when the track has none. */
   art: string | null;
@@ -77,9 +76,7 @@ const readMusic = (value: unknown): Music | null => {
     artist: text(source.artist, MAX_ARTIST),
     track,
     url,
-    nowPlaying: source.nowPlaying === true,
-    // A playing track has no timestamp yet; a stale one is dropped.
-    playedAt: source.nowPlaying === true ? null : playedAt,
+    playedAt,
     art: cover(source.art),
   };
 };

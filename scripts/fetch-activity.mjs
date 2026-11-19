@@ -140,7 +140,7 @@ const readMusic = async (apiKey) => {
   url.searchParams.set('user', LASTFM_USER);
   url.searchParams.set('api_key', apiKey);
   url.searchParams.set('format', 'json');
-  url.searchParams.set('limit', '1');
+  url.searchParams.set('limit', '5');
 
   const response = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT_MS) });
   if (!response.ok) throw new Error(`${response.status} from last.fm`);
@@ -148,7 +148,11 @@ const readMusic = async (apiKey) => {
   const data = await response.json();
   if (data.error) throw new Error(`last.fm said: ${data.message}`);
 
-  const track = data?.recenttracks?.track?.[0];
+  const raw = data?.recenttracks?.track;
+  const list = Array.isArray(raw) ? raw : raw ? [raw] : [];
+  // The newest entry may be a track that is still playing, which has no
+  // scrobble date yet. "Last played" means the newest completed scrobble.
+  const track = list.find((entry) => Number(entry?.date?.uts) > 0) ?? list[0];
   if (!track) throw new Error('last.fm returned no recent track');
 
   const artist = typeof track.artist === 'string' ? track.artist : track.artist?.['#text'];
@@ -164,7 +168,6 @@ const readMusic = async (apiKey) => {
     artist: clean(String(artist)),
     track: clean(String(track.name)),
     url: typeof track.url === 'string' ? track.url : `https://www.last.fm/user/${LASTFM_USER}`,
-    nowPlaying: track['@attr']?.nowplaying === 'true',
     playedAt: Number.isFinite(played) && played > 0 ? new Date(played * 1000).toISOString() : null,
     image: artwork ?? '',
   };
