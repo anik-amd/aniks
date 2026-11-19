@@ -122,7 +122,7 @@ if (existsSync(path('index.html'))) {
   const hasCovers = hasBooks && snapshot.books.some((book) => book.cover);
 
   if (hasMusic || hasBooks) {
-    expect(/id="now-title"/, 'Now section missing');
+    expect(/class="section now"/, 'Now section missing');
   }
 
   if (hasMusic) {

@@ -107,25 +107,7 @@ const structuredData = {
 
   {
     hasNow && (
-      <section class="section now" aria-labelledby="now-title">
-        <h2 class="section-title" id="now-title">
-          <svg
-            class="section-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.7"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path d="M4 15v-3a8 8 0 0 1 16 0v3" />
-            <rect x="3" y="13.5" width="4.2" height="6.5" rx="1.6" />
-            <rect x="16.8" y="13.5" width="4.2" height="6.5" rx="1.6" />
-          </svg>
-          <span>Now</span>
-        </h2>
+      <section class="section now" aria-label="Now">
         {music && (
           <div class="now-music">
             <!--now:music-->
@@ -141,8 +123,8 @@ const structuredData = {
                   class="now-art"
                   src={music.art}
                   alt=""
-                  width="56"
-                  height="56"
+                  width="72"
+                  height="72"
                   loading="lazy"
                   decoding="async"
                 />
@@ -203,8 +185,8 @@ const structuredData = {
                       class="now-cover"
                       src={book.cover}
                       alt=""
-                      width="128"
-                      height="192"
+                      width="72"
+                      height="112"
                       loading="lazy"
                       decoding="async"
                     />
