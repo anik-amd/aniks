@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+    inputs:
+      persist:
+        description: Commit the refreshed snapshot instead of only building it
+        type: boolean
+        default: false
   # The Now snapshot is refreshed weekly, then the same build ships.
   schedule:
     - cron: '17 5 * * 1'
@@ -64,7 +69,7 @@ jobs:
       # This run has already built and tested the same bytes it is committing.
       # Never blocking: if main is protected, next week refreshes anyway.
       - name: Commit the refreshed snapshot
-        if: github.event_name == 'schedule'
+        if: github.event_name == 'schedule' || github.event.inputs.persist == 'true'
         continue-on-error: true
         run: |
           if [ -z "$(git status --porcelain -- src/data/activity.json public/covers)" ]; then
