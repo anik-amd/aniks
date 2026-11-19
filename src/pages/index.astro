@@ -110,6 +110,7 @@ const structuredData = {
       <section class="section now" aria-label="Last played and reading">
         {music && (
           <div class="now-music">
+            <span class="now-label">Last played</span>
             <!--now:music-->
             <a
               class="now-player"
@@ -155,15 +156,11 @@ const structuredData = {
               <span class="now-copy">
                 <span class="now-track">{music.track}</span>
                 {music.artist && <span class="now-artist">{music.artist}</span>}
-                <span class="now-state">
-                  {playedLabel ? (
-                    <>
-                      Last played <time datetime={music.playedAt}>{playedLabel}</time>
-                    </>
-                  ) : (
-                    'Last played'
-                  )}
-                </span>
+                {playedLabel && (
+                  <span class="now-state">
+                    <time datetime={music.playedAt}>{playedLabel}</time>
+                  </span>
+                )}
               </span>
             </a>
             <!--/now:music-->
@@ -171,41 +168,44 @@ const structuredData = {
         )}
         {books.length > 0 && (
           <div class="now-reading">
-            <ul class="now-shelf" aria-label="Currently reading">
-              {books.map((book) => (
-                <li>
-                  <a
-                    href={book.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${book.title}${book.author ? ` by ${book.author}` : ''}, on Goodreads`}
-                  >
-                    {book.cover ? (
-                      <img
-                        class="now-cover"
-                        src={book.cover}
-                        alt=""
-                        width="64"
-                        height="96"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    ) : (
-                      <span class="now-cover now-cover-empty">{book.title}</span>
-                    )}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <a
-              class="now-more"
-              href={NOW_PROFILES.goodreads}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="See more books on Goodreads"
-            >
-              See more<span aria-hidden="true"> ↗</span>
-            </a>
+            <span class="now-label">Reading</span>
+            <div class="now-books">
+              <ul class="now-shelf" aria-label="Currently reading">
+                {books.map((book) => (
+                  <li>
+                    <a
+                      href={book.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${book.title}${book.author ? ` by ${book.author}` : ''}, on Goodreads`}
+                    >
+                      {book.cover ? (
+                        <img
+                          class="now-cover"
+                          src={book.cover}
+                          alt=""
+                          width="64"
+                          height="96"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      ) : (
+                        <span class="now-cover now-cover-empty">{book.title}</span>
+                      )}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <a
+                class="now-more"
+                href={NOW_PROFILES.goodreads}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="See more books on Goodreads"
+              >
+                See more<span aria-hidden="true"> ↗</span>
+              </a>
+            </div>
           </div>
         )}
       </section>

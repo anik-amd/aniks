@@ -467,23 +467,35 @@
 
   /*
    * Now is a coda to the intro, not a section of its own: it starts close to
-   * the bio and stays one left-aligned cluster, so it reads as a status line
+   * the bio and stays one left-aligned cluster, so it reads as a status block
    * rather than a toolbar spread across the page.
    */
   .section.now {
     margin-top: 1.75rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: wrap;
-    gap: 1.5rem;
+    gap: 1.75rem;
   }
 
-  .now-music {
-    flex: 0 1 auto;
+  /* Two groups, each a tiny label over its content, so their tops line up. */
+  .now-music,
+  .now-reading {
+    display: grid;
+    gap: 0.45rem;
     min-width: 0;
   }
 
+  .now-label {
+    font-size: 0.6875rem;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+  }
+
   .now-player {
+    /* The shelf keeps headroom for its hover lift; match it so the art lines up. */
+    margin-top: 0.35rem;
     display: flex;
     align-items: center;
     gap: 0.8rem;
@@ -590,11 +602,10 @@
   }
 
   /* Covers and the way out sit together, straight after the track. */
-  .now-reading {
+  .now-books {
     display: flex;
     align-items: center;
     gap: 0.9rem;
-    flex: 0 1 auto;
     min-width: 0;
   }
 
@@ -931,14 +942,10 @@
       margin-top: 1.5rem;
       flex-direction: column;
       align-items: stretch;
-      gap: 1.1rem;
+      gap: 1.25rem;
     }
 
-    .now-music {
-      flex: 0 0 auto;
-    }
-
-    .now-reading {
+    .now-books {
       flex-direction: column;
       align-items: stretch;
       gap: 0.5rem;
