@@ -3,12 +3,13 @@
  *
  * The browser only ever loads images from our own origin, so the edge fetches
  * the Last.fm thumbnail once and serves it from our URL. Only Last.fm's image
- * hosts are allowed, so this cannot be used as an open proxy.
+ * hosts are allowed, so this cannot be used as an open proxy. Last.fm serves
+ * art from both `lastfm` and `lastfm-img` on two CDNs.
  */
 
 type Context = { request: Request };
 
-const HOSTS = new Set(['lastfm.freetls.fastly.net', 'lastfm-img2.akamaized.net', 'lastfm-img.akamaized.net']);
+const HOST = /^lastfm(?:-img\d?)?\.(?:freetls\.fastly|akamaized)\.net$/;
 const MAX_BYTES = 1_000_000;
 const TIMEOUT_MS = 2_500;
 
@@ -22,7 +23,7 @@ export const onRequest = async ({ request }: Context): Promise<Response> => {
   } catch {
     return new Response('bad image', { status: 400 });
   }
-  if (source.protocol !== 'https:' || !HOSTS.has(source.hostname)) {
+  if (source.protocol !== 'https:' || !HOST.test(source.hostname)) {
     return new Response('blocked host', { status: 400 });
   }
 
